@@ -25,3 +25,6 @@
 /.nb-gradle/
 /.idea/
 /.mvn/
+
+mvnw
+mvnw.cmd
