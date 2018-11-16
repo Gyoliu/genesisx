@@ -46,7 +46,7 @@ response_type=code：为返回的授权码
 授权成功后会转发到：&redirect_uri=http://baidu.com?code=qteU2F
 
 http://localhost:1111/oauth/token?grant_type=authorization_code&code=s7Kdfe&client_id=demoApp&client_secret=demoAppSecret&redirect_uri=http://baidu.com
-&code=s7Kdfe：是上面获取的
+&code=s7Kdfe：是上面获取的, code只能使用一次
 
 {
     "access_token": "5ade2caa-fa20-4b98-bef0-e63f2de54b7f",
@@ -70,5 +70,6 @@ https://www.jianshu.com/p/1a0a5c92185e
 
 WebSecurityConfigurerAdapter的配置的拦截要优先于ResourceServerConfigurerAdapter，优先级高的http配置是可以覆盖优先级低的配置的。
 某些情况下如果需要ResourceServerConfigurerAdapter的拦截优先于WebSecurityConfigurerAdapter需要在配置文件中添加
+
 
 ```

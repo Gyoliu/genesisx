@@ -77,7 +77,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .scopes("all")
                 .autoApprove(true)
                 .autoApprove("all")
-                .redirectUris("https://www.baidu.com/")
                 .resourceIds(resourceId)
                 .accessTokenValiditySeconds(oauth2Property.getAccessTokenValiditySeconds())
                 .refreshTokenValiditySeconds(oauth2Property.getRefreshTokenValiditySeconds())

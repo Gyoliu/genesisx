@@ -21,13 +21,9 @@ public class CustomResouceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.httpBasic()
-                .and().csrf().disable().anonymous()
-                .and().authorizeRequests().antMatchers("/", "/oauth/**").permitAll()
-                .and().formLogin().permitAll()
-                .and().authorizeRequests().anyRequest().authenticated()
-                //用户只能存在一个
-                .and().sessionManagement().maximumSessions(1).expiredUrl("/login?expired")
+        http.requestMatchers().antMatchers("/api/**")
+                .and()
+                .authorizeRequests().antMatchers("/api/**").authenticated()
         ;
     }
 
