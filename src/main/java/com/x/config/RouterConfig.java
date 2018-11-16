@@ -1,3 +1,4 @@
+/*
 package com.x.config;
 
 import org.springframework.context.annotation.Bean;
@@ -15,11 +16,13 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
+*/
 /**
  * @Author: liuxing
  * @Date: 2018/11/8 17:38
  * @Description:
- */
+ *//*
+
 @Configuration
 public class RouterConfig {
 
@@ -36,4 +39,4 @@ public class RouterConfig {
         return ok().contentType(MediaType.TEXT_PLAIN).body(Mono.just("Today is " + new SimpleDateFormat("yyyy-MM-dd").format(new Date())), String.class);
     }
 
-}
+}*/

@@ -6,10 +6,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
-import org.springframework.web.reactive.result.condition.RequestMethodsRequestCondition;
-import org.springframework.web.reactive.result.method.RequestMappingInfo;
-import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,10 +31,9 @@ public class MyCommandLineRunner implements CommandLineRunner {
         RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
         // 获取url与类和方法的对应信息
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = mapping.getHandlerMethods();
-        List<Map<String, String>> list = new ArrayList<Map<String, String>>();
         handlerMethods.forEach((k, v) -> {
             PatternsRequestCondition patternsCondition = k.getPatternsCondition();
-            List<String> collect = patternsCondition.getPatterns().stream().map(pattern -> pattern.getPatternString()).collect(Collectors.toList());
+            List<String> collect = patternsCondition.getPatterns().stream().map(pattern -> pattern).collect(Collectors.toList());
             String path = String.join(",", collect);
             RequestMethodsRequestCondition methodsCondition = k.getMethodsCondition();
             List<String> types = methodsCondition.getMethods().stream().map(requestMethod -> requestMethod.toString()).collect(Collectors.toList());
