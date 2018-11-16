@@ -25,11 +25,14 @@ public class SysUser {
 
     private Integer modifierId;
 
+    private Integer roleId;
+
     private SysUserInfo createUser;
     private SysUserInfo modifyUser;
     private SysUserInfo userInfo;
 
     private SysRole roles;
+
     private List<SysResource> resources;
 
 }

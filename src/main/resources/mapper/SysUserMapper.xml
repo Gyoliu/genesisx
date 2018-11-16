@@ -11,15 +11,17 @@
     <result column="creator_id" jdbcType="INTEGER" property="createrId" />
     <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
     <result column="modifier_id" jdbcType="INTEGER" property="modifierId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
   </resultMap>
 
   <resultMap id="BaseResultMapJoin"  extends="BaseResultMap" type="com.x.dao.entity.SysUser">
     <association property="userInfo" column="user_id" select="com.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
     <association property="createUser" column="creator_id" select="com.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
     <association property="modifyUser" column="modifier_id" select="com.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
+
     <association property="roles" column="role_id" select="com.x.dao.SysRoleMapper.selectByPrimaryKey"></association>
-    <collection property="resources" column="role_id"
-                select="com.x.dao.SysResourceMapper.selectByRoleId"
+
+    <collection property="resources" column="role_id" select="com.x.dao.SysResourceMapper.selectByRoleId"
                 ofType="com.x.dao.entity.SysResource"></collection>
   </resultMap>
 
