@@ -23,6 +23,9 @@ public class CustomResouceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.requestMatchers().antMatchers("/api/**")
                 .requestMatchers().antMatchers("/user/**")
+                .requestMatchers().antMatchers("/role/**")
+                .requestMatchers().antMatchers("/resource/**")
+                .requestMatchers().antMatchers("/system/**")
                 .and().authorizeRequests().antMatchers("/**").authenticated()
         ;
     }

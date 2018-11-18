@@ -127,7 +127,7 @@ public class CustomUserDetailsManager implements UserDetailsManager, UserDetails
     public static List<GrantedAuthority> getGrantedAuthorities(SysUser user){
         List<GrantedAuthority> authorities = new ArrayList<>();
         //todo 这里应该改成一个用户对应多个角色
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRoles().getRole()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getSysRole().getRole().toUpperCase()));
         return authorities;
     }
 
