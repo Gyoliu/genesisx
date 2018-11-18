@@ -1,9 +1,9 @@
 package com.x.dao;
 
 import com.x.dao.entity.SysUserInfo;
-import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.List;
+
 public interface SysUserInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -18,4 +18,6 @@ public interface SysUserInfoMapper {
     int updateByPrimaryKeyWithBLOBs(SysUserInfo record);
 
     int updateByPrimaryKey(SysUserInfo record);
+
+    List<SysUserInfo> selectList();
 }

@@ -14,10 +14,10 @@
 #### 主要调试入口：TokenEndpoint 这里定义了OAuth的访问路径
 ##### 1、通过用户账号密码获取token（grant_type=password）
 ```
-http://localhost:1111/oauth/token?username=demoUser1&password=123456&grant_type=password&client_id=demoApp&client_secret=demoAppSecret
+http://localhost:1111/oauth/token?username=genesis&password=genesisx&grant_type=password&client_id=genesis&client_secret=genesisx
 username和password是：UserDetailsService里面定义的
 grant_type=password：是固定的写法，模式参考 ClientDetailsServiceConfigurer.authorizedGrantTypes.有（"authorization_code","client_credentials", "password", "refresh_token"）
-&client_id=demoApp&client_secret=demoAppSecret：是授权服务指定的账号密码
+&client_id=genesis&client_secret=genesisx：是授权服务指定的账号密码
 返回值如下：
 {
     "access_token": "ae70ab4d-63a5-43c1-8605-58c029142f1b",
@@ -29,7 +29,7 @@ grant_type=password：是固定的写法，模式参考 ClientDetailsServiceConf
 ```
 ##### 2、通过授权服务颁发的账号密码获取token（grant_type=client_credentials）
 ```
-http://localhost:1111/oauth/token?grant_type=client_credentials&client_id=demoApp&client_secret=demoAppSecret
+http://localhost:1111/oauth/token?grant_type=client_credentials&client_id=genesis&client_secret=genesisx
 {
     "access_token": "68f1b360-803b-491d-9696-9997dbed8e3a",
     "token_type": "bearer",
@@ -41,11 +41,11 @@ http://localhost:1111/oauth/token?grant_type=client_credentials&client_id=demoAp
 ##### 3、交互式授权模式
 ```
 使用浏览器访问下面这个路径，会引导用户到登入页面，用户输入UserDetailsService里面定义的账号密码，登入成功后获取授权码
-http://localhost:1111/oauth/authorize?response_type=code&client_id=demoApp&redirect_uri=http://baidu.com
+http://localhost:1111/oauth/authorize?response_type=code&client_id=genesis&redirect_uri=http://baidu.com
 response_type=code：为返回的授权码
 授权成功后会转发到：&redirect_uri=http://baidu.com?code=qteU2F
 
-http://localhost:1111/oauth/token?grant_type=authorization_code&code=s7Kdfe&client_id=demoApp&client_secret=demoAppSecret&redirect_uri=http://baidu.com
+http://localhost:1111/oauth/token?grant_type=authorization_code&code=s7Kdfe&client_id=genesis&client_secret=genesisx&redirect_uri=http://baidu.com
 &code=s7Kdfe：是上面获取的, code只能使用一次
 
 {
@@ -60,7 +60,7 @@ http://localhost:1111/oauth/token?grant_type=authorization_code&code=s7Kdfe&clie
 ##### 4、刷新token（grant_type=refresh_token）
 ```
 使用浏览器访问下面这个路径，会引导用户到登入页面，用户输入UserDetailsService里面定义的账号密码，登入成功后获取授权码
-http://localhost:1111/oauth/token?grant_type=refresh_token&refresh_token=22f29a7e-b0db-4c80-8385-971792c6d420&client_id=demoApp&client_secret=demoAppSecret
+http://localhost:1111/oauth/token?grant_type=refresh_token&refresh_token=22f29a7e-b0db-4c80-8385-971792c6d420&client_id=genesis&client_secret=genesisx
 
 ```
 
@@ -73,3 +73,5 @@ WebSecurityConfigurerAdapter的配置的拦截要优先于ResourceServerConfigur
 
 
 ```
+
+#### UsernamePasswordAuthenticationFilter

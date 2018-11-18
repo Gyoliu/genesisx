@@ -25,12 +25,12 @@ public class MyCommandLineRunner implements CommandLineRunner {
     public void run(String... strings) throws Exception {
         FrameworkEndpointHandlerMapping frameworkEndpointHandlerMapping = (FrameworkEndpointHandlerMapping)applicationContext.getBean("oauth2EndpointHandlerMapping");
         frameworkEndpointHandlerMapping.getHandlerMethods().forEach((k, v) -> {
-            log.info("path:{},method:{}", k.toString(), v.getMethod().toString());
+            log.info("{} - {}", k.toString(), v.getMethod().toString());
         });
 
         RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
         mapping.getHandlerMethods().forEach((k, v) -> {
-            log.info("path:{},method:{}", k.toString(), v.getMethod().toString());
+            log.info("{} - {}", k.toString(), v.getMethod().toString());
         });
     }
 }

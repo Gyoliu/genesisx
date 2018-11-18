@@ -8,7 +8,4 @@ public class SysRole {
 
     private String role;
 
-    public Integer getId() {
-        return id;
-    }
 }

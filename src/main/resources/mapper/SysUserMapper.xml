@@ -19,15 +19,16 @@
     <association property="createUser" column="creator_id" select="com.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
     <association property="modifyUser" column="modifier_id" select="com.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
 
-    <association property="roles" column="role_id" select="com.x.dao.SysRoleMapper.selectByPrimaryKey"></association>
+    <association property="sysRole" column="role_id" select="com.x.dao.SysRoleMapper.selectByPrimaryKey"></association>
 
-    <collection property="resources" column="role_id" select="com.x.dao.SysResourceMapper.selectByRoleId"
+    <collection property="sysResources" column="role_id" select="com.x.dao.SysResourceMapper.selectByRoleId"
                 ofType="com.x.dao.entity.SysResource"></collection>
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, user_id, username, password, salt, locking, create_date, creator_id, modify_date, modifier_id
+    id, user_id,role_id, username, password, salt, locking, create_date, creator_id, modify_date, modifier_id
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

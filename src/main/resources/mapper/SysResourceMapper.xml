@@ -16,6 +16,13 @@
   <sql id="Base_Column_List">
     id, name, path, type, parent_id, level, permission, status, icon, role_id
   </sql>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_resource
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

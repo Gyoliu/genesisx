@@ -31,8 +31,8 @@ public class SysUser {
     private SysUserInfo modifyUser;
     private SysUserInfo userInfo;
 
-    private SysRole roles;
+    private SysRole sysRole;
 
-    private List<SysResource> resources;
+    private List<SysResource> sysResources;
 
 }

@@ -1,11 +1,9 @@
 package com.x.dao;
 
 import com.x.dao.entity.SysUser;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface SysUserMapper {
     int deleteByPrimaryKey(Integer id);
 
