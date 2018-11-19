@@ -46,8 +46,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             log.error("{} - is locked！", username);
             throw new LockedException("account is locked!");
         }
-
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password, authentication.getAuthorities());
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password, CustomUserDetailsManager.getGrantedAuthorities(sysUser));
         return usernamePasswordAuthenticationToken;
     }
 
