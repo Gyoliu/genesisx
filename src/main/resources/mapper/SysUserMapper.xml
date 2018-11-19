@@ -6,6 +6,7 @@
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="enable" jdbcType="BIT" property="enable" />
     <result column="locking" jdbcType="BIT" property="locking" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="creator_id" jdbcType="INTEGER" property="createrId" />
@@ -26,7 +27,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, user_id,role_id, username, password, salt, locking, create_date, creator_id, modify_date, modifier_id
+    id, user_id,role_id, username, password, salt, enable, locking, create_date, creator_id, modify_date, modifier_id
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

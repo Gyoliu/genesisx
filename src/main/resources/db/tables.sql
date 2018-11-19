@@ -67,3 +67,5 @@ CREATE TABLE `persistent_logins` (
   PRIMARY KEY (`series`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `sys_user`
+ADD COLUMN `enable`  bit(1) NULL AFTER `salt`;

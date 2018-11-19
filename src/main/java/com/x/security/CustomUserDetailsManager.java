@@ -1,6 +1,7 @@
 package com.x.security;
 
 import com.alibaba.fastjson.JSON;
+import com.x.config.SpringContextHolder;
 import com.x.dao.entity.SysUser;
 import com.x.service.impl.SysUserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +36,6 @@ public class CustomUserDetailsManager implements UserDetailsManager, UserDetails
     @Autowired
     private SysUserServiceImpl sysUserService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser sysUser = sysUserService.selectByUsername(username);
@@ -46,7 +44,7 @@ public class CustomUserDetailsManager implements UserDetailsManager, UserDetails
             throw new UsernameNotFoundException("user not found!");
         }
         User user = new User(sysUser.getUsername(), sysUser.getPassword()
-                , sysUser.getLocking(), true, true, true
+                , sysUser.getEnable(), true, true, !sysUser.getLocking()
                 , CustomUserDetailsManager.getGrantedAuthorities(sysUser));
         return user;
     }
@@ -59,7 +57,7 @@ public class CustomUserDetailsManager implements UserDetailsManager, UserDetails
         }
         this.changePassword(sysUser.getPassword(), newPassword);
         User user = new User(sysUser.getUsername(), newPassword
-                , sysUser.getLocking(), true, true, true
+                , sysUser.getEnable(), true, true, !sysUser.getLocking()
                 , getGrantedAuthorities(sysUser));
         return user;
     }
@@ -80,6 +78,7 @@ public class CustomUserDetailsManager implements UserDetailsManager, UserDetails
         if(sysUser != null){
             SysUser sysUserParam = new SysUser();
             sysUserParam.setId(sysUser.getId());
+            sysUserParam.setEnable(false);
             sysUserParam.setLocking(true);
             sysUserParam.setModifierId(sysUser.getId());
             sysUserParam.setModifyDate(new Date());
@@ -89,15 +88,16 @@ public class CustomUserDetailsManager implements UserDetailsManager, UserDetails
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
+        AuthenticationManager authenticationManager = SpringContextHolder.getBean(AuthenticationManager.class);
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
         if(currentUser == null) {
             throw new AccessDeniedException("Can\'t change password as no Authentication object found in context for current user.");
         } else {
             String username = currentUser.getName();
             log.debug("Changing password for user \'" + username + "\'");
-            if(this.authenticationManager != null) {
+            if(authenticationManager != null) {
                 log.debug("Reauthenticating user \'" + username + "\' for password change request.");
-                this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
             } else {
                 log.debug("No authentication manager set. Password won\'t be re-checked.");
             }

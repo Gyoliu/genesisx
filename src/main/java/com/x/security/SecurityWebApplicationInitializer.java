@@ -1,6 +1,7 @@
 package com.x.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
  * @Description: 开启enableHttpSessionEventPublisher 支持SessionRegistry
  */
 @Slf4j
+@Configuration
 public class SecurityWebApplicationInitializer extends AbstractSecurityWebApplicationInitializer {
 
     @Override

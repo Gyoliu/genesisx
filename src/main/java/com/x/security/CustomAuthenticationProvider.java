@@ -4,10 +4,7 @@ import com.x.dao.entity.SysUser;
 import com.x.service.ISysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,7 +26,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        log.info("==================login name:{}===========",authentication.getName());
+        log.info("==================authenticate name:{}===========",authentication.getName());
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
         SysUser sysUser = sysUserService.selectByUsername(username);
@@ -40,6 +37,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (!password.equals(sysUser.getPassword())) {
             log.error("{} - wrong password exception！", username);
             throw new AuthenticationCredentialsNotFoundException("username or password error!");
+        }
+        if(!sysUser.getEnable()){
+            log.error("{} - is disabled！", username);
+            throw new DisabledException("account is disabled!");
         }
         if(sysUser.getLocking()){
             log.error("{} - is locked！", username);

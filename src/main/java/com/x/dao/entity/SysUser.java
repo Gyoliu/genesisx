@@ -17,6 +17,8 @@ public class SysUser {
 
     private Boolean locking;
 
+    private Boolean enable;
+
     private Date createDate;
 
     private Integer createrId;
