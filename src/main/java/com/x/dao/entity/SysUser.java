@@ -1,5 +1,6 @@
 package com.x.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
@@ -7,12 +8,15 @@ import java.util.List;
 
 @Data
 public class SysUser {
+
     private Integer id;
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
+    @JsonIgnore
     private String salt;
 
     private Boolean locking;

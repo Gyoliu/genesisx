@@ -26,7 +26,7 @@ public class CustomResouceServerConfig extends ResourceServerConfigurerAdapter {
                 .requestMatchers().antMatchers("/role/**")
                 .requestMatchers().antMatchers("/resource/**")
                 .requestMatchers().antMatchers("/system/**")
-                .and().authorizeRequests().antMatchers("/**").authenticated()
+                .and().authorizeRequests().anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedHandler(new CustomAccessDeineHandler()).authenticationEntryPoint(new CustomAuthenticationEntryPoint())
         ;
     }
