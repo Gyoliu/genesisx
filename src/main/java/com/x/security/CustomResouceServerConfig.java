@@ -2,6 +2,7 @@ package com.x.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -15,17 +16,20 @@ import static com.x.security.AuthorizationServerConfiguration.resourceId;
  * @Description:
  */
 @Slf4j
+@Order(2)
 @Configuration
 @EnableResourceServer
 public class CustomResouceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.requestMatchers().antMatchers("/api/**")
-                .requestMatchers().antMatchers("/user/**")
-                .requestMatchers().antMatchers("/role/**")
-                .requestMatchers().antMatchers("/resource/**")
-                .requestMatchers().antMatchers("/system/**")
+        http.requestMatchers()
+                .antMatchers("/api/**")
+                .antMatchers("/user/**")
+                .antMatchers("/role/**")
+                .antMatchers("/resource/**")
+                .antMatchers("/system/**")
+                .and().authorizeRequests().antMatchers("/system/login").permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedHandler(new CustomAccessDeineHandler()).authenticationEntryPoint(new CustomAuthenticationEntryPoint())
         ;

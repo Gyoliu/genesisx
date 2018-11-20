@@ -74,4 +74,15 @@ WebSecurityConfigurerAdapter的配置的拦截要优先于ResourceServerConfigur
 
 ```
 
-#### UsernamePasswordAuthenticationFilter
+#### UsernamePasswordAuthenticationFilter、TokenEndpoint、AuthorizationEndpoint
+
+AuthorizationCodeTokenGranter 默认的token生成器
+OAuth2AccessToken token = this.getTokenGranter().grant(tokenRequest.getGrantType(), tokenRequest);
+OAuth2AccessToken token = AuthorizationCodeTokenGranter.grant(tokenRequest.getGrantType(), tokenRequest);
+
+DefaultOAuth2RequestFactory 
+TokenRequest tokenRequest = this.getOAuth2RequestFactory().createTokenRequest(parameters, authenticatedClient);
+
+InMemoryClientDetailsService
+ClientDetails authenticatedClient = this.getClientDetailsService().loadClientByClientId(clientId);
+

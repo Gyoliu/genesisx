@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,6 +18,8 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.TokenGranter;
 
 /**
  * @Author: liuxing
@@ -24,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @Description:
  */
 @Slf4j
+@Order(6)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -37,6 +41,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private Oauth2Property oauth2Property;
+
+    @Autowired
+    private AuthorizationServerConfiguration authorizationServerConfiguration;
+
+    @Autowired
+    private ClientDetailsService clientDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,19 +66,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic()
                 .and().csrf().disable().anonymous()
                 .and().formLogin().successHandler(new AuthenticationSuccessHandler())
-                //.loginPage(loginPage)
+                .loginPage(loginPage)
+                //.loginProcessingUrl("/system/login")
                 .permitAll()
                 .and().logout().permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
                 //用户只能存在一个
                 .and().sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry()).expiredUrl("/login?expired")
-
         ;
+        http.addFilter(new LoginAuthenticationFilter(super.authenticationManager()
+                , clientDetailsService, authorizationServerConfiguration.getTokenGranter(), oauth2Property.getClientId(), oauth2Property.getSecret()));
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(customAuthenticationProvider).userDetailsService(userDetailsService);
+        auth.authenticationProvider(customAuthenticationProvider).userDetailsService(userDetailsService)
+        ;
     }
 
     @Bean
