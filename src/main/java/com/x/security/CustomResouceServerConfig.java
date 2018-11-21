@@ -29,7 +29,7 @@ public class CustomResouceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/role/**")
                 .antMatchers("/resource/**")
                 .antMatchers("/system/**")
-                .and().authorizeRequests().antMatchers("/system/login").permitAll()
+                .antMatchers("/error")
                 .and().authorizeRequests().anyRequest().authenticated()
                 .and().exceptionHandling().accessDeniedHandler(new CustomAccessDeineHandler()).authenticationEntryPoint(new CustomAuthenticationEntryPoint())
         ;

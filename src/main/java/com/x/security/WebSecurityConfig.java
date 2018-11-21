@@ -16,10 +16,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.TokenGranter;
 
 /**
  * @Author: liuxing
@@ -53,6 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+
+        //return new BCryptPasswordEncoder();
         return NoOpPasswordEncoder.getInstance();
     }
 
@@ -63,24 +65,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilter(new LoginAuthenticationFilter(super.authenticationManager()
+                , clientDetailsService, authorizationServerConfiguration.getTokenGranter()
+                , oauth2Property.getClientId(), oauth2Property.getSecret()));
         http.httpBasic()
                 .and().csrf().disable().anonymous()
-                .and().formLogin().successHandler(new AuthenticationSuccessHandler())
+                .and().formLogin().successHandler(new AuthenticationSuccessHandler()).failureHandler(new AuthenticationFailureHandler())
                 .loginPage(loginPage)
-                //.loginProcessingUrl("/system/login")
                 .permitAll()
                 .and().logout().permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
                 //用户只能存在一个
                 .and().sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry()).expiredUrl("/login?expired")
         ;
-        http.addFilter(new LoginAuthenticationFilter(super.authenticationManager()
-                , clientDetailsService, authorizationServerConfiguration.getTokenGranter(), oauth2Property.getClientId(), oauth2Property.getSecret()));
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(customAuthenticationProvider).userDetailsService(userDetailsService)
+        auth.authenticationProvider(customAuthenticationProvider)
+                .userDetailsService(userDetailsService).passwordEncoder(passwordEncoder())
         ;
     }
 

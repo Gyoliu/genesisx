@@ -1,5 +1,6 @@
 package com.x.security;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -41,6 +42,8 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
             , TokenGranter tokenGranter
             , String clientId, String clientSecret){
         this.setAuthenticationManager(authenticationManager);
+        this.setAuthenticationFailureHandler(new AuthenticationFailureHandler());
+        this.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler());
         this.clientDetailsService = clientDetailsService;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -76,6 +79,11 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
             this.setDetails(request, authRequest);
             Authentication authenticate = this.getAuthenticationManager().authenticate(authRequest);
 
+            /*if(!authRequest.isAuthenticated() || !authenticate.isAuthenticated()){
+                authenticate.setAuthenticated(false);
+                return authenticate;
+            }*/
+
             ClientDetails authenticatedClient = clientDetailsService.loadClientByClientId(clientId);
             DefaultOAuth2RequestFactory defaultOAuth2RequestFactory = new DefaultOAuth2RequestFactory(clientDetailsService);
             HashMap<String, String> parameters = new HashMap<>();
@@ -87,10 +95,12 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
             parameters.put("scope", request.getParameter("scope"));
             TokenRequest tokenRequest = defaultOAuth2RequestFactory.createTokenRequest(parameters, authenticatedClient);
             OAuth2AccessToken token = this.tokenGranter.grant(tokenRequest.getGrantType(), tokenRequest);
+            log.info("----username:{}, token:{}", username, JSON.toJSONString(token));
             DefaultOAuth2AccessToken token1 = (DefaultOAuth2AccessToken) token;
             Map<String, Object> additionalInformation = new HashMap<>();
             additionalInformation.put("authenticate", authenticate);
             token1.setAdditionalInformation(additionalInformation);
+
             return authenticate;
         }
     }

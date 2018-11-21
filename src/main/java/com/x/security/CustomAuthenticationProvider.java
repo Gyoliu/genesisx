@@ -8,13 +8,15 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 
 /**
  * @Author: liuxing
  * @Date: 2018/11/8 15:44
- * @Description:
+ * @Description: DaoAuthenticationProvider
  */
 
 @Slf4j
@@ -24,17 +26,23 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private ISysUserService sysUserService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         log.info("==================authenticate name:{}===========",authentication.getName());
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
+        if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
+            throw new BadCredentialsException("username or password error!");
+        }
         SysUser sysUser = sysUserService.selectByUsername(username);
         if(sysUser == null){
             log.error("username not found exception:{}", username);
             throw new UsernameNotFoundException("username or password error!");
         }
-        if (!password.equals(sysUser.getPassword())) {
+        if (!passwordEncoder.matches(password, sysUser.getPassword())) {
             log.error("{} - wrong password exception！", username);
             throw new AuthenticationCredentialsNotFoundException("username or password error!");
         }
@@ -46,8 +54,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             log.error("{} - is locked！", username);
             throw new LockedException("account is locked!");
         }
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password, CustomUserDetailsManager.getGrantedAuthorities(sysUser));
-        return usernamePasswordAuthenticationToken;
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, CustomUserDetailsManager.getGrantedAuthorities(sysUser));
+        return token;
     }
 
     @Override

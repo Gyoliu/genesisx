@@ -1,6 +1,5 @@
 package com.x.security;
 
-import com.x.config.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,7 +15,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 /**
@@ -88,7 +86,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         clients.inMemory()
                 .withClient(oauth2Property.getClientId())
                 .secret(oauth2Property.getSecret())
-                .authorizedGrantTypes("authorization_code","client_credentials", "password", "refresh_token")
+                //,"client_credentials" 不支持直接使用ClientId和Secret
+                .authorizedGrantTypes("authorization_code", "password", "refresh_token")
                 .scopes("all")
                 .autoApprove(true)
                 .autoApprove("all")

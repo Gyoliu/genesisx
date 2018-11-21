@@ -38,6 +38,7 @@ public class CustomUserDetailsManager implements UserDetailsManager, UserDetails
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("---------------------CustomUserDetailsManager.loadUserByUsername------------------------------------");
         SysUser sysUser = sysUserService.selectByUsername(username);
         if(sysUser == null){
             log.error("-----------user:{} not found-------------",username);
