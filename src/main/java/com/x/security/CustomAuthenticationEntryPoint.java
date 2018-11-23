@@ -2,7 +2,6 @@ package com.x.security;
 
 import com.alibaba.fastjson.JSON;
 import com.x.dto.ResultDto;
-import com.x.utils.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;

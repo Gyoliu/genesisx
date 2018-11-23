@@ -68,13 +68,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilter(new LoginAuthenticationFilter(super.authenticationManager()
                 , clientDetailsService, authorizationServerConfiguration.getTokenGranter()
                 , oauth2Property.getClientId(), oauth2Property.getSecret()));
+
         http.httpBasic()
                 .and().csrf().disable().anonymous()
                 .and().formLogin().successHandler(new AuthenticationSuccessHandler()).failureHandler(new AuthenticationFailureHandler())
                 .loginPage(loginPage)
                 .permitAll()
-                .and().logout().permitAll()
+                .and().logout().deleteCookies("token").clearAuthentication(true)
+                .logoutSuccessHandler(new CustomLogoutSuccessHandler(loginPage)).permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
+                .and().exceptionHandling().accessDeniedHandler(new CustomAccessDeineHandler()).authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 //用户只能存在一个
                 .and().sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry()).expiredUrl("/login?expired")
         ;

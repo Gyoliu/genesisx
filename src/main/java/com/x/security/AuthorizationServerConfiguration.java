@@ -67,6 +67,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .tokenStore(inMemoryTokenStore())
                 .authorizationCodeServices(inMemoryAuthorizationCodeServices())
                 .tokenGranter(tokenGranter)
+                .exceptionTranslator(new CustomResponseExceptionTranslator())
                 //允许 GET、POST 请求获取 token，即访问端点：oauth/token
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
         ;
@@ -78,6 +79,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .checkTokenAccess("isAuthenticated()")
                 .tokenKeyAccess("permitAll()")
                 .realm(resourceId)
+                .accessDeniedHandler(new CustomAccessDeineHandler())
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
         ;
     }
 
