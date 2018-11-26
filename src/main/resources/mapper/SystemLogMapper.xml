@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.x.dao.SystemLogMapper">
+  <resultMap id="BaseResultMap" type="com.x.dao.entity.SystemLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="before_data" jdbcType="CHAR" property="beforeData" />
+    <result column="after_data" jdbcType="CHAR" property="afterData" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, before_data, after_data, create_time,creator
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectSystemLogs" parameterType="com.x.dao.entity.SystemLog" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_log
+    where creator = #{creator,jdbcType=INTEGER} and type = #{type} and create_time BETWEEN #{beginCreateTime} and #{createTime}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.x.dao.entity.SystemLog">
+    insert into sys_log (id, type, before_data, 
+      after_data, create_time)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{beforeData,jdbcType=CHAR}, 
+      #{afterData,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.x.dao.entity.SystemLog">
+    insert into sys_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="beforeData != null">
+        before_data,
+      </if>
+      <if test="afterData != null">
+        after_data,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="beforeData != null">
+        #{beforeData,jdbcType=CHAR},
+      </if>
+      <if test="afterData != null">
+        #{afterData,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.x.dao.entity.SystemLog">
+    update sys_log
+    <set>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="beforeData != null">
+        before_data = #{beforeData,jdbcType=CHAR},
+      </if>
+      <if test="afterData != null">
+        after_data = #{afterData,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.x.dao.entity.SystemLog">
+    update sys_log
+    set type = #{type,jdbcType=VARCHAR},
+      before_data = #{beforeData,jdbcType=CHAR},
+      after_data = #{afterData,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

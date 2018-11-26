@@ -56,6 +56,7 @@ CREATE TABLE `sys_log` (
   `before_data` json DEFAULT NULL,
   `after_data` json DEFAULT NULL,
   `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `creator` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
