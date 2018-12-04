@@ -33,8 +33,14 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${login.page}")
+    @Value("${login.page:/login}")
     private String loginPage;
+
+    @Value("${cors.host:http://localhost:8080}")
+    private String host;
+
+    @Value("${oauth.cookie.name}")
+    private String cookieName;
 
     @Autowired
     private CustomAuthenticationProvider customAuthenticationProvider;
@@ -69,17 +75,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 , clientDetailsService, authorizationServerConfiguration.getTokenGranter()
                 , oauth2Property.getClientId(), oauth2Property.getSecret()));
 
+        String loginUrl = host + loginPage;
         http.httpBasic()
                 .and().csrf().disable().anonymous()
-                .and().formLogin().successHandler(new AuthenticationSuccessHandler()).failureHandler(new AuthenticationFailureHandler())
-                .loginPage(loginPage)
-                .permitAll()
-                .and().logout().deleteCookies("token").clearAuthentication(true)
-                .logoutSuccessHandler(new CustomLogoutSuccessHandler(loginPage)).permitAll()
+                .and().formLogin()
+                .successHandler(new AuthenticationSuccessHandler()).failureHandler(new AuthenticationFailureHandler())
+                .loginPage(loginUrl).permitAll()
+                .and().logout().addLogoutHandler(new CustomLogoutHandler()).deleteCookies(cookieName).clearAuthentication(true)
+                .logoutSuccessHandler(new CustomLogoutSuccessHandler(loginUrl)).permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
-                .and().exceptionHandling().accessDeniedHandler(new CustomAccessDeineHandler()).authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                //.and().exceptionHandling().accessDeniedHandler(new CustomAccessDeineHandler()).authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 //用户只能存在一个
-                .and().sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry()).expiredUrl("/login?expired")
+                .and().sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry()).expiredUrl(loginUrl)
         ;
     }
 

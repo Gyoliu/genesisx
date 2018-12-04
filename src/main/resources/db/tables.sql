@@ -1,5 +1,5 @@
 CREATE TABLE `sys_user_info` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
   `phone_number` varchar(255) DEFAULT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE `sys_user_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sys_user` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `role_id` int(11) DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
@@ -31,13 +31,13 @@ CREATE TABLE `sys_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sys_role` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sys_resource` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `path` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE `sys_resource` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sys_log` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(255) DEFAULT NULL,
   `before_data` json DEFAULT NULL,
   `after_data` json DEFAULT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE `sys_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `persistent_logins` (
-  `username` varchar(64) NOT NULL,
+  `username` varchar(64) NOT NULL ,
   `series` varchar(64) NOT NULL,
   `token` varchar(64) NOT NULL,
   `last_used` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

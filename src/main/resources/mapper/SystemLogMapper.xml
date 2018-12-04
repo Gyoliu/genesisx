@@ -28,11 +28,11 @@
     delete from sys_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.x.dao.entity.SystemLog">
-    insert into sys_log (id, type, before_data, 
-      after_data, create_time)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{beforeData,jdbcType=CHAR}, 
-      #{afterData,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.x.dao.entity.SystemLog" useGeneratedKeys="true" keyProperty="id">
+    insert into sys_log ( type, before_data,
+      after_data, create_time, creator)
+    values ( #{type,jdbcType=VARCHAR}, #{beforeData,jdbcType=CHAR},
+      #{afterData,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creator})
   </insert>
   <insert id="insertSelective" parameterType="com.x.dao.entity.SystemLog">
     insert into sys_log
@@ -52,6 +52,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="creator != null">
+        creator,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -68,6 +71,9 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        #{creator},
       </if>
     </trim>
   </insert>
@@ -86,6 +92,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="creator != null">
+        creator = #{creator},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -94,7 +103,8 @@
     set type = #{type,jdbcType=VARCHAR},
       before_data = #{beforeData,jdbcType=CHAR},
       after_data = #{afterData,jdbcType=CHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      creator = #{creator}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

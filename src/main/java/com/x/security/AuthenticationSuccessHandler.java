@@ -29,6 +29,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         ISystemLogService bean = SpringContextHolder.getBean(ISystemLogService.class);
         SystemLog systemLog = new SystemLog();
         systemLog.setType(SystemLog.Type.LOGIN.name());
+        systemLog.setAfterData(JSON.toJSONString(authentication));
         bean.insert(systemLog);
         super.onAuthenticationSuccess(request, response, authentication);
     }
