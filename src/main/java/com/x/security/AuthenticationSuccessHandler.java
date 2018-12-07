@@ -32,5 +32,6 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         systemLog.setAfterData(JSON.toJSONString(authentication));
         bean.insert(systemLog);
         super.onAuthenticationSuccess(request, response, authentication);
+        log.info("-------------------onAuthenticationSuccess end------------------------");
     }
 }

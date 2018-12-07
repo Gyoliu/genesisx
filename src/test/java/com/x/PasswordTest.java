@@ -1,11 +1,10 @@
 package com.x;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,6 +23,17 @@ public class PasswordTest {
 
         boolean matches = passwordEncoder.matches("admin", encode);
         System.out.println(matches);
+
+        //前端提交的密码 s
+        String password = "123456";
+        String s = DigestUtils.md5Hex(password);
+        System.out.println(s);
+
+        //数据库保存的密码 encode1
+        String encode1 = passwordEncoder.encode(s);
+        System.out.println(encode1);
+        //匹配
+        System.out.println(passwordEncoder.matches(s, encode1));
     }
 
     @Test

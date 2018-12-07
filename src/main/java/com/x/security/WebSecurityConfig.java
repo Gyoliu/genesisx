@@ -3,6 +3,7 @@ package com.x.security;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -20,6 +21,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.web.header.HeaderWriter;
+import org.springframework.security.web.header.writers.CacheControlHeadersWriter;
+import org.springframework.security.web.header.writers.HstsHeaderWriter;
+import org.springframework.security.web.header.writers.XContentTypeOptionsHeaderWriter;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+import org.springframework.web.cors.CorsUtils;
+
+import java.util.ArrayList;
 
 /**
  * @Author: liuxing
@@ -30,6 +40,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 @Order(6)
 @Configuration
 @EnableWebSecurity
+//@EnableOAuth2Sso
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -59,9 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
-        //return new BCryptPasswordEncoder();
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
+        //return NoOpPasswordEncoder.getInstance();
     }
 
     @Bean
@@ -71,18 +81,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        ArrayList<HeaderWriter> list = new ArrayList<>();
+        list.add(new XContentTypeOptionsHeaderWriter());
+        list.add(new XXssProtectionHeaderWriter());
+        list.add(new CacheControlHeadersWriter());
+        list.add(new HstsHeaderWriter());
+        list.add(new XFrameOptionsHeaderWriter());
+        http.addFilter(new CustomHeaderWriterFilter(list));
+
         http.addFilter(new LoginAuthenticationFilter(super.authenticationManager()
                 , clientDetailsService, authorizationServerConfiguration.getTokenGranter()
                 , oauth2Property.getClientId(), oauth2Property.getSecret()));
 
         String loginUrl = host + loginPage;
         http.httpBasic()
-                .and().csrf().disable().anonymous()
-                .and().formLogin()
+                .and().csrf().disable().anonymous().and()
+                .formLogin()
                 .successHandler(new AuthenticationSuccessHandler()).failureHandler(new AuthenticationFailureHandler())
                 .loginPage(loginUrl).permitAll()
-                .and().logout().addLogoutHandler(new CustomLogoutHandler()).deleteCookies(cookieName).clearAuthentication(true)
+                .and().logout().addLogoutHandler(new CustomLogoutHandler()).deleteCookies(cookieName, "JSESSIONID")
+                .invalidateHttpSession(true).clearAuthentication(true)
                 .logoutSuccessHandler(new CustomLogoutSuccessHandler(loginUrl)).permitAll()
+                .and().authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
                 //.and().exceptionHandling().accessDeniedHandler(new CustomAccessDeineHandler()).authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 //用户只能存在一个

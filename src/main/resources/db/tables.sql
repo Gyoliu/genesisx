@@ -14,6 +14,8 @@ CREATE TABLE `sys_user_info` (
   `remarks` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `world`.`sys_user_info` (`id`, `first_name`, `last_name`, `phone_number`, `email`, `birth_date`, `personal_signature`, `head_portrait`, `create_date`, `creator_id`, `modify_date`, `modifier_id`, `remarks`) VALUES ('1', 'admin', 'admin', '111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
 
 CREATE TABLE `sys_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,12 +31,17 @@ CREATE TABLE `sys_user` (
   `modifier_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `world`.`sys_user` (`id`, `user_id`, `role_id`, `username`, `password`, `salt`, `enable`, `locking`, `create_date`, `creator_id`, `modify_date`, `modifier_id`) VALUES ('1', '1', '1', 'admin', '$2a$10$Oyp8PRtsE7F105mdgI6bYOODnT.tO3YV5dFJC7tS7hKTqovLogfRu', 'admin', b'1', b'0', '2018-11-15 15:31:54', '1', '2018-12-05 15:34:24', '1');
+
 
 CREATE TABLE `sys_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `world`.`sys_role` (`id`, `role`) VALUES ('1', 'admin');
+
 
 CREATE TABLE `sys_resource` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -58,7 +65,8 @@ CREATE TABLE `sys_log` (
   `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `creator` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `persistent_logins` (
   `username` varchar(64) NOT NULL ,

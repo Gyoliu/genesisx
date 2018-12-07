@@ -86,3 +86,11 @@ TokenRequest tokenRequest = this.getOAuth2RequestFactory().createTokenRequest(pa
 InMemoryClientDetailsService
 ClientDetails authenticatedClient = this.getClientDetailsService().loadClientByClientId(clientId);
 
+AuthenticationProvider
+AuthenticationProvider接口是用于认证的，可以通过实现这个接口来定制我们自己的认证逻辑，它的实现类有很多，默认的是JaasAuthenticationProvider
+
+AccessDecisionManager
+AccessDecisionManager是用于访问控制的，它决定用户是否可以访问某个资源，实现这个接口可以定制我们自己的授权逻辑。
+
+AccessDecisionVoter
+AccessDecisionVoter是投票器，在授权的时通过投票的方式来决定用户是否可以访问，这里涉及到投票规则。

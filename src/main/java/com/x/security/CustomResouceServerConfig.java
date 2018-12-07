@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -15,6 +14,7 @@ import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEn
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.web.cors.CorsUtils;
 
 import static com.x.security.AuthorizationServerConfiguration.resourceId;
 
@@ -28,9 +28,6 @@ import static com.x.security.AuthorizationServerConfiguration.resourceId;
 @Configuration
 @EnableResourceServer
 public class CustomResouceServerConfig extends ResourceServerConfigurerAdapter {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @Autowired
     private TokenStore tokenStore;
@@ -55,7 +52,11 @@ public class CustomResouceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/resource/**")
                 .antMatchers("/system/**")
                 .antMatchers("/error")
+                .and().httpBasic()
+                .and().csrf().disable().anonymous()
+                .and().authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
+                .and().authorizeRequests().antMatchers("/").authenticated()
                 .and().exceptionHandling().accessDeniedHandler(new CustomAccessDeineHandler()).authenticationEntryPoint(new CustomAuthenticationEntryPoint())
         ;
     }
