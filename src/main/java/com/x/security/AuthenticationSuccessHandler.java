@@ -22,6 +22,11 @@ import java.io.IOException;
 @Slf4j
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
+    public AuthenticationSuccessHandler(String homeUrl){
+        this.setAlwaysUseDefaultTargetUrl(true);
+        this.setDefaultTargetUrl(homeUrl);
+    }
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         log.info("-------------------onAuthenticationSuccess------------------------");

@@ -7,6 +7,7 @@ import com.x.security.LoginAuthenticationFilter;
 import com.x.security.Oauth2Property;
 import com.x.service.ISysUserService;
 import com.x.utils.QueryUtils;
+import com.x.utils.WebUtils;
 import com.x.vo.QueryVo;
 import com.x.vo.UserQueryVo;
 import lombok.extern.slf4j.Slf4j;
@@ -74,19 +75,8 @@ public class OauthController {
      */
     @RequestMapping("/")
     public ResultDto home(HttpServletRequest request, HttpServletResponse response) {
-        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        if(currentUser == null){
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return new ResultDto(HttpStatus.UNAUTHORIZED);
-        }
-        String username = currentUser.getName();
-
-        SysUser sysUser = sysUserService.selectByUsername(username);
-        Collection<OAuth2AccessToken> tokensByClientIdAndUserName = inMemoryTokenStore.findTokensByClientIdAndUserName(oauth2Property.getClientId(), username);
-        OAuth2AccessToken oAuth2AccessToken = null;
-        if(tokensByClientIdAndUserName != null && tokensByClientIdAndUserName.size() > 0){
-            oAuth2AccessToken = tokensByClientIdAndUserName.iterator().next();
-        }
+        SystemUserDto sessionUser = WebUtils.getSessionUser();
+        OAuth2AccessToken oAuth2AccessToken = sessionUser.getOAuth2AccessToken();
         Cookie cookie = new Cookie(this.cookieName,oAuth2AccessToken == null? null:oAuth2AccessToken.getValue());
         cookie.setDomain(this.domain);
         cookie.setHttpOnly(this.httpOnly);
@@ -94,7 +84,7 @@ public class OauthController {
         cookie.setMaxAge(this.maxAge);
         cookie.setSecure(true);
         response.addCookie(cookie);
-        return new ResultDto(new SystemUserDto(sysUser, oAuth2AccessToken));
+        return new ResultDto(sessionUser);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

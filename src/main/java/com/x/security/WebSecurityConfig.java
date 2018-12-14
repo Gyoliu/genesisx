@@ -46,6 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${login.page:/login}")
     private String loginPage;
+    @Value("${home.page:/}")
+    private String homePage;
 
     @Value("${cors.host:http://localhost:8080}")
     private String host;
@@ -89,15 +91,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         list.add(new XFrameOptionsHeaderWriter());
         http.addFilter(new CustomHeaderWriterFilter(list));
 
+        String loginUrl = host + loginPage;
+        String homeUrl = host + homePage;
+
         http.addFilter(new LoginAuthenticationFilter(super.authenticationManager()
                 , clientDetailsService, authorizationServerConfiguration.getTokenGranter()
-                , oauth2Property.getClientId(), oauth2Property.getSecret()));
+                , oauth2Property.getClientId(), oauth2Property.getSecret(), homeUrl));
 
-        String loginUrl = host + loginPage;
         http.httpBasic()
                 .and().csrf().disable().anonymous().and()
                 .formLogin()
-                .successHandler(new AuthenticationSuccessHandler()).failureHandler(new AuthenticationFailureHandler())
+                .successHandler(new AuthenticationSuccessHandler(homeUrl)).failureHandler(new AuthenticationFailureHandler())
                 .loginPage(loginUrl).permitAll()
                 .and().logout().addLogoutHandler(new CustomLogoutHandler()).deleteCookies(cookieName, "JSESSIONID")
                 .invalidateHttpSession(true).clearAuthentication(true)

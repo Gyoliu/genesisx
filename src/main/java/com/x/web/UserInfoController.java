@@ -12,12 +12,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+
+import static com.x.dto.EnumError.USER_NOT_EXIST;
 
 /**
  * ClassName:UserInfoController
@@ -39,13 +38,12 @@ public class UserInfoController {
     @Autowired
     private Oauth2Property oauth2Property;
 
-    @RequestMapping(value = "/info/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultDto userInfo(@PathVariable("username") String username){
+    @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultDto userInfo(@RequestParam("username") String username){
         SysUser sysUser = sysUserService.selectByUsername(username);
-        //当前用户
-        /*Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = currentUser.getAuthorities();
-        */
+        if(sysUser == null){
+            return new ResultDto(USER_NOT_EXIST);
+        }
         SystemUserDto systemUserDto = new SystemUserDto(sysUser);
         Collection<OAuth2AccessToken> tokensByClientIdAndUserName = inMemoryTokenStore.findTokensByClientIdAndUserName(oauth2Property.getClientId(), username);
         OAuth2AccessToken oAuth2AccessToken = null;

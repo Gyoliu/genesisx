@@ -22,8 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GenExceptionHandler {
 
-    @ExceptionHandler({Exception.class})
-    public ResponseEntity<ResultDto> sassExceptionHandler(Exception exception) {
+    private String buildMessage(Exception exception){
         String message = "";
         if(exception.getCause() != null){
             message = exception.getCause().getMessage();
@@ -32,6 +31,19 @@ public class GenExceptionHandler {
             message = exception.getMessage();
             log.error("[异常信息:{}]", message);
         }
+        return message;
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<ResultDto> exceptionHandler(Exception exception) {
+        String message = this.buildMessage(exception);
+        ResultDto result = new ResultDto(500, message);
+        return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity<ResultDto> exceptionHandler(RuntimeException exception) {
+        String message = this.buildMessage(exception);
         ResultDto result = new ResultDto(500, message);
         return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,10 +41,10 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
     public LoginAuthenticationFilter(AuthenticationManager authenticationManager
             , ClientDetailsService clientDetailsService
             , TokenGranter tokenGranter
-            , String clientId, String clientSecret){
+            , String clientId, String clientSecret, String homeUrl){
         this.setAuthenticationManager(authenticationManager);
         this.setAuthenticationFailureHandler(new AuthenticationFailureHandler());
-        this.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler());
+        this.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler(homeUrl));
         this.clientDetailsService = clientDetailsService;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -52,7 +53,7 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        if(!request.getMethod().equals("POST")) {
+        if(!request.getMethod().equals(HttpMethod.POST.name())) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         } else {
             String username = "";
@@ -79,11 +80,6 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
             this.setDetails(request, authRequest);
             Authentication authenticate = this.getAuthenticationManager().authenticate(authRequest);
 
-            /*if(!authRequest.isAuthenticated() || !authenticate.isAuthenticated()){
-                authenticate.setAuthenticated(false);
-                return authenticate;
-            }*/
-
             ClientDetails authenticatedClient = clientDetailsService.loadClientByClientId(clientId);
             DefaultOAuth2RequestFactory defaultOAuth2RequestFactory = new DefaultOAuth2RequestFactory(clientDetailsService);
             HashMap<String, String> parameters = new HashMap<>();
@@ -100,7 +96,6 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
             Map<String, Object> additionalInformation = new HashMap<>();
             additionalInformation.put("authenticate", authenticate);
             token1.setAdditionalInformation(additionalInformation);
-
             return authenticate;
         }
     }

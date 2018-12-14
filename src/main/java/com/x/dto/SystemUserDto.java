@@ -30,6 +30,8 @@ public class SystemUserDto {
         this.oAuth2AccessToken = oAuth2AccessToken;
     }
 
+    private Integer id;
+
     private String username;
 
     private Boolean locking;

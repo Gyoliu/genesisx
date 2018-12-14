@@ -10,7 +10,10 @@ public enum EnumError {
     SYSTEM_ERROR(10000, "系统异常"),
     PARAMS_ERROR(10001, "参数错误"),
     UNAUTHORIZED_ERROR(10003, "UNAUTHORIZED"),
-    NOT_EXIST(10004, "资源不存在");
+    NOT_EXIST(10004, "资源不存在"),
+
+    USER_NOT_EXIST(20000, "用户不存在")
+    ;
 
     private Integer code;
 
