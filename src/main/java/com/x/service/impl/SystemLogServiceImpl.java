@@ -39,11 +39,13 @@ public class SystemLogServiceImpl implements ISystemLogService {
 
     @Override
     public int insert(SystemLog record) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String name = authentication.getName();
-        SysUser sysUser = sysUserService.selectByUsername(name);
+        if(record.getCreator() == null){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String name = authentication.getName();
+            SysUser sysUser = sysUserService.selectByUsername(name);
+            record.setCreator(sysUser.getId());
+        }
         record.setCreateTime(new Date());
-        record.setCreator(sysUser.getId());
         return systemLogMapper.insert(record);
     }
 

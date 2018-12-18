@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.x.dao.SystemMenuMapper">
+  <resultMap id="BaseResultMap" type="com.x.dao.entity.SystemMenu">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="hide_in_menu" jdbcType="BIT" property="hideInMenu" />
+    <result column="hide_in_bread" jdbcType="BIT" property="hideInBread" />
+    <result column="not_cache" jdbcType="BIT" property="notCache" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="component" jdbcType="VARCHAR" property="component" />
+    <result column="parent" jdbcType="INTEGER" property="parent" />
+    <result column="redirect" jdbcType="VARCHAR" property="redirect" />
+    <result column="href" jdbcType="VARCHAR" property="href" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="order" jdbcType="INTEGER" property="order" />
+    <result column="before_close_name" jdbcType="VARCHAR" property="beforeCloseName" />
+    <result column="access" jdbcType="VARCHAR" property="access" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, path, hide_in_menu, hide_in_bread, not_cache, title, icon, component, parent, 
+    redirect, href, level, order, before_close_name, access
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectSystemMenus" parameterType="com.x.dao.entity.SystemMenu" resultMap="BaseResultMap">
+    select
+    a.*
+    from sys_menu  a inner join sys_user_menu_rel b on a.id = b.menu_id and b.user_id = #{userId,jdbcType=INTEGER}
+    <where>
+      <if test="level != null">a.level = #{level,jdbcType=INTEGER}</if>
+      <if test="parent != null">a.parent = #{parent,jdbcType=INTEGER}</if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.x.dao.entity.SystemMenu">
+    insert into sys_menu (id, name, path, 
+      hide_in_menu, hide_in_bread, not_cache, 
+      title, icon, component, 
+      parent, redirect, href, 
+      level, order, before_close_name, 
+      access)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{hideInMenu,jdbcType=BIT}, #{hideInBread,jdbcType=BIT}, #{notCache,jdbcType=BIT}, 
+      #{title,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{component,jdbcType=VARCHAR}, 
+      #{parent,jdbcType=INTEGER}, #{redirect,jdbcType=VARCHAR}, #{href,jdbcType=VARCHAR}, 
+      #{level,jdbcType=INTEGER}, #{order,jdbcType=INTEGER}, #{beforeCloseName,jdbcType=VARCHAR}, 
+      #{access,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.x.dao.entity.SystemMenu">
+    insert into sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="path != null">
+        path,
+      </if>
+      <if test="hideInMenu != null">
+        hide_in_menu,
+      </if>
+      <if test="hideInBread != null">
+        hide_in_bread,
+      </if>
+      <if test="notCache != null">
+        not_cache,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="component != null">
+        component,
+      </if>
+      <if test="parent != null">
+        parent,
+      </if>
+      <if test="redirect != null">
+        redirect,
+      </if>
+      <if test="href != null">
+        href,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="order != null">
+        order,
+      </if>
+      <if test="beforeCloseName != null">
+        before_close_name,
+      </if>
+      <if test="access != null">
+        access,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="hideInMenu != null">
+        #{hideInMenu,jdbcType=BIT},
+      </if>
+      <if test="hideInBread != null">
+        #{hideInBread,jdbcType=BIT},
+      </if>
+      <if test="notCache != null">
+        #{notCache,jdbcType=BIT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="component != null">
+        #{component,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null">
+        #{parent,jdbcType=INTEGER},
+      </if>
+      <if test="redirect != null">
+        #{redirect,jdbcType=VARCHAR},
+      </if>
+      <if test="href != null">
+        #{href,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="order != null">
+        #{order,jdbcType=INTEGER},
+      </if>
+      <if test="beforeCloseName != null">
+        #{beforeCloseName,jdbcType=VARCHAR},
+      </if>
+      <if test="access != null">
+        #{access,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.x.dao.entity.SystemMenu">
+    update sys_menu
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="hideInMenu != null">
+        hide_in_menu = #{hideInMenu,jdbcType=BIT},
+      </if>
+      <if test="hideInBread != null">
+        hide_in_bread = #{hideInBread,jdbcType=BIT},
+      </if>
+      <if test="notCache != null">
+        not_cache = #{notCache,jdbcType=BIT},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="component != null">
+        component = #{component,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null">
+        parent = #{parent,jdbcType=INTEGER},
+      </if>
+      <if test="redirect != null">
+        redirect = #{redirect,jdbcType=VARCHAR},
+      </if>
+      <if test="href != null">
+        href = #{href,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="order != null">
+        order = #{order,jdbcType=INTEGER},
+      </if>
+      <if test="beforeCloseName != null">
+        before_close_name = #{beforeCloseName,jdbcType=VARCHAR},
+      </if>
+      <if test="access != null">
+        access = #{access,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.x.dao.entity.SystemMenu">
+    update sys_menu
+    set name = #{name,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      hide_in_menu = #{hideInMenu,jdbcType=BIT},
+      hide_in_bread = #{hideInBread,jdbcType=BIT},
+      not_cache = #{notCache,jdbcType=BIT},
+      title = #{title,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      component = #{component,jdbcType=VARCHAR},
+      parent = #{parent,jdbcType=INTEGER},
+      redirect = #{redirect,jdbcType=VARCHAR},
+      href = #{href,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      order = #{order,jdbcType=INTEGER},
+      before_close_name = #{beforeCloseName,jdbcType=VARCHAR},
+      access = #{access,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

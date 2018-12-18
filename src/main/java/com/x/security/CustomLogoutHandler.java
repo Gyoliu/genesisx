@@ -5,6 +5,7 @@ import com.x.config.SpringContextHolder;
 import com.x.dao.entity.SystemLog;
 import com.x.service.ISystemLogService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,10 @@ public class CustomLogoutHandler implements LogoutHandler {
         SystemLog systemLog = new SystemLog();
         systemLog.setType(SystemLog.Type.LOGOUT.name());
         systemLog.setBeforeData(JSON.toJSONString(authentication));
+        if(SecurityContextHolder.getContext().getAuthentication() == null){
+            String userId = httpServletRequest.getParameter("userId");
+            systemLog.setCreator(Integer.parseInt(userId));
+        }
         bean.insert(systemLog);
     }
 }
