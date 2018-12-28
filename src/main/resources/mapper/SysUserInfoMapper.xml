@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.x.dao.SysUserInfoMapper">
-  <resultMap id="BaseResultMap" type="com.x.dao.entity.SysUserInfo">
+<mapper namespace="com.genesis.x.dao.SysUserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.genesis.x.dao.entity.SysUserInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="first_name" jdbcType="VARCHAR" property="firstName" />
     <result column="last_name" jdbcType="VARCHAR" property="lastName" />
@@ -15,7 +15,7 @@
     <result column="modifier_id" jdbcType="INTEGER" property="modifierId" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.x.dao.entity.SysUserInfo">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.genesis.x.dao.entity.SysUserInfo">
     <result column="head_portrait" jdbcType="LONGVARBINARY" property="headPortrait" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -44,7 +44,7 @@
     delete from sys_user_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.x.dao.entity.SysUserInfo">
+  <insert id="insert" parameterType="com.genesis.x.dao.entity.SysUserInfo">
     insert into sys_user_info (id, first_name, last_name, 
       phone_number, email, birth_date, 
       personal_signature, create_date, creater_id, 
@@ -56,7 +56,7 @@
       #{modifyDate,jdbcType=TIMESTAMP}, #{modifierId,jdbcType=INTEGER}, #{headPortrait,jdbcType=LONGVARBINARY}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.x.dao.entity.SysUserInfo">
+  <insert id="insertSelective" parameterType="com.genesis.x.dao.entity.SysUserInfo">
     insert into sys_user_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -135,7 +135,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.x.dao.entity.SysUserInfo">
+  <update id="updateByPrimaryKeySelective" parameterType="com.genesis.x.dao.entity.SysUserInfo">
     update sys_user_info
     <set>
       <if test="firstName != null">
@@ -174,7 +174,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.x.dao.entity.SysUserInfo">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.genesis.x.dao.entity.SysUserInfo">
     update sys_user_info
     set first_name = #{firstName,jdbcType=VARCHAR},
       last_name = #{lastName,jdbcType=VARCHAR},
@@ -189,7 +189,7 @@
       head_portrait = #{headPortrait,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.x.dao.entity.SysUserInfo">
+  <update id="updateByPrimaryKey" parameterType="com.genesis.x.dao.entity.SysUserInfo">
     update sys_user_info
     set first_name = #{firstName,jdbcType=VARCHAR},
       last_name = #{lastName,jdbcType=VARCHAR},

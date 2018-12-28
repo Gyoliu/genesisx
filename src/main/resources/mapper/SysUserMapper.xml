@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.x.dao.SysUserMapper">
-  <resultMap id="BaseResultMap" type="com.x.dao.entity.SysUser">
+<mapper namespace="com.genesis.x.dao.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.genesis.x.dao.entity.SysUser">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
@@ -15,15 +15,15 @@
     <result column="role_id" jdbcType="INTEGER" property="roleId" />
   </resultMap>
 
-  <resultMap id="BaseResultMapJoin"  extends="BaseResultMap" type="com.x.dao.entity.SysUser">
-    <association property="userInfo" column="user_id" select="com.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
-    <association property="createUser" column="creator_id" select="com.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
-    <association property="modifyUser" column="modifier_id" select="com.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
+  <resultMap id="BaseResultMapJoin"  extends="BaseResultMap" type="com.genesis.x.dao.entity.SysUser">
+    <association property="userInfo" column="user_id" select="com.genesis.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
+    <association property="createUser" column="creator_id" select="com.genesis.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
+    <association property="modifyUser" column="modifier_id" select="com.genesis.x.dao.SysUserInfoMapper.selectByPrimaryKey"></association>
 
-    <association property="sysRole" column="role_id" select="com.x.dao.SysRoleMapper.selectByPrimaryKey"></association>
+    <association property="sysRole" column="role_id" select="com.genesis.x.dao.SysRoleMapper.selectByPrimaryKey"></association>
 
-    <collection property="sysResources" column="role_id" select="com.x.dao.SysResourceMapper.selectByRoleId"
-                ofType="com.x.dao.entity.SysResource"></collection>
+    <collection property="sysResources" column="role_id" select="com.genesis.x.dao.SysResourceMapper.selectByRoleId"
+                ofType="com.genesis.x.dao.entity.SysResource"></collection>
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -61,7 +61,7 @@
     delete from sys_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.x.dao.entity.SysUser">
+  <insert id="insert" parameterType="com.genesis.x.dao.entity.SysUser">
     insert into sys_user (id, username, password, 
       salt, locking, create_date, 
       creater_id, modify_date, modifier_id
@@ -71,7 +71,7 @@
       #{createrId,jdbcType=INTEGER}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifierId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.x.dao.entity.SysUser">
+  <insert id="insertSelective" parameterType="com.genesis.x.dao.entity.SysUser">
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -132,7 +132,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.x.dao.entity.SysUser">
+  <update id="updateByPrimaryKeySelective" parameterType="com.genesis.x.dao.entity.SysUser">
     update sys_user
     <set>
       <if test="username != null">
@@ -162,7 +162,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.x.dao.entity.SysUser">
+  <update id="updateByPrimaryKey" parameterType="com.genesis.x.dao.entity.SysUser">
     update sys_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
@@ -175,7 +175,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updatePasswordByUsername" parameterType="com.x.dao.entity.SysUser">
+  <update id="updatePasswordByUsername" parameterType="com.genesis.x.dao.entity.SysUser">
     update sys_user
     set
     password = #{password,jdbcType=VARCHAR},

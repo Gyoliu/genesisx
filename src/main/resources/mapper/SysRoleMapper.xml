@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.x.dao.SysRoleMapper">
-  <resultMap id="BaseResultMap" type="com.x.dao.entity.SysRole">
+<mapper namespace="com.genesis.x.dao.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="com.genesis.x.dao.entity.SysRole">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="role" jdbcType="VARCHAR" property="role" />
   </resultMap>
@@ -25,11 +25,11 @@
     delete from sys_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.x.dao.entity.SysRole">
+  <insert id="insert" parameterType="com.genesis.x.dao.entity.SysRole">
     insert into sys_role (id, role)
     values (#{id,jdbcType=INTEGER}, #{role,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.x.dao.entity.SysRole">
+  <insert id="insertSelective" parameterType="com.genesis.x.dao.entity.SysRole">
     insert into sys_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -48,7 +48,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.x.dao.entity.SysRole">
+  <update id="updateByPrimaryKeySelective" parameterType="com.genesis.x.dao.entity.SysRole">
     update sys_role
     <set>
       <if test="role != null">
@@ -57,7 +57,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.x.dao.entity.SysRole">
+  <update id="updateByPrimaryKey" parameterType="com.genesis.x.dao.entity.SysRole">
     update sys_role
     set role = #{role,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}

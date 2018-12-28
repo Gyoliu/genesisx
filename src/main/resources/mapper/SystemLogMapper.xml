@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.x.dao.SystemLogMapper">
-  <resultMap id="BaseResultMap" type="com.x.dao.entity.SystemLog">
+<mapper namespace="com.genesis.x.dao.SystemLogMapper">
+  <resultMap id="BaseResultMap" type="com.genesis.x.dao.entity.SystemLog">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="before_data" jdbcType="CHAR" property="beforeData" />
@@ -18,7 +18,7 @@
     from sys_log
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectSystemLogs" parameterType="com.x.dao.entity.SystemLog" resultMap="BaseResultMap">
+  <select id="selectSystemLogs" parameterType="com.genesis.x.dao.entity.SystemLog" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from sys_log
@@ -28,13 +28,13 @@
     delete from sys_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.x.dao.entity.SystemLog" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.genesis.x.dao.entity.SystemLog" useGeneratedKeys="true" keyProperty="id">
     insert into sys_log ( type, before_data,
       after_data, create_time, creator)
     values ( #{type,jdbcType=VARCHAR}, #{beforeData,jdbcType=CHAR},
       #{afterData,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creator})
   </insert>
-  <insert id="insertSelective" parameterType="com.x.dao.entity.SystemLog">
+  <insert id="insertSelective" parameterType="com.genesis.x.dao.entity.SystemLog">
     insert into sys_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -77,7 +77,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.x.dao.entity.SystemLog">
+  <update id="updateByPrimaryKeySelective" parameterType="com.genesis.x.dao.entity.SystemLog">
     update sys_log
     <set>
       <if test="type != null">
@@ -98,7 +98,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.x.dao.entity.SystemLog">
+  <update id="updateByPrimaryKey" parameterType="com.genesis.x.dao.entity.SystemLog">
     update sys_log
     set type = #{type,jdbcType=VARCHAR},
       before_data = #{beforeData,jdbcType=CHAR},

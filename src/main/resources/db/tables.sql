@@ -15,6 +15,7 @@ CREATE TABLE `sys_user_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `world`.`sys_user_info` (`id`, `first_name`, `last_name`, `phone_number`, `email`, `birth_date`, `personal_signature`, `head_portrait`, `create_date`, `creator_id`, `modify_date`, `modifier_id`, `remarks`) VALUES ('1', 'admin', 'admin', '111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `world`.`sys_user_info` (`id`, `first_name`, `last_name`, `phone_number`, `email`, `birth_date`, `personal_signature`, `head_portrait`, `create_date`, `creator_id`, `modify_date`, `modifier_id`, `remarks`) VALUES ('2', 'xing', 'liu', '13417*****', '1111@163.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
 CREATE TABLE `sys_user` (
@@ -32,6 +33,7 @@ CREATE TABLE `sys_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `world`.`sys_user` (`id`, `user_id`, `role_id`, `username`, `password`, `salt`, `enable`, `locking`, `create_date`, `creator_id`, `modify_date`, `modifier_id`) VALUES ('1', '1', '1', 'admin', '$2a$10$Oyp8PRtsE7F105mdgI6bYOODnT.tO3YV5dFJC7tS7hKTqovLogfRu', 'admin', b'1', b'0', '2018-11-15 15:31:54', '1', '2018-12-05 15:34:24', '1');
+INSERT INTO `world`.`sys_user` (`id`, `user_id`, `role_id`, `username`, `password`, `salt`, `enable`, `locking`, `create_date`, `creator_id`, `modify_date`, `modifier_id`) VALUES ('2', '2', '1', 'liuxing', '$2a$10$BliDjhy71PxRHofP6VYt/ecmPdX/G.s6S.TWn.lGfUHDA9Asqs/ee', '123456', b'1', b'0', '2018-12-05 16:07:04', '1', '2018-12-05 16:07:43', '1');
 
 
 CREATE TABLE `sys_role` (
