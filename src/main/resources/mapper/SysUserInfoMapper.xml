@@ -44,13 +44,13 @@
     delete from sys_user_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.genesis.x.dao.entity.SysUserInfo">
-    insert into sys_user_info (id, first_name, last_name, 
+  <insert id="insert" parameterType="com.genesis.x.dao.entity.SysUserInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into sys_user_info (first_name, last_name,
       phone_number, email, birth_date, 
       personal_signature, create_date, creater_id, 
       modify_date, modifier_id, head_portrait
       )
-    values (#{id,jdbcType=INTEGER}, #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, 
+    values ( #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR},
       #{phoneNumber,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{birthDate,jdbcType=TIMESTAMP}, 
       #{personalSignature,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createrId,jdbcType=INTEGER}, 
       #{modifyDate,jdbcType=TIMESTAMP}, #{modifierId,jdbcType=INTEGER}, #{headPortrait,jdbcType=LONGVARBINARY}

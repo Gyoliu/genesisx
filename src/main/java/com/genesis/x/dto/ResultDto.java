@@ -30,6 +30,10 @@ public class ResultDto<T> implements Serializable {
 
     private String timestamp;
 
+    public static ResultDto success(){
+        return new ResultDto(SuccessCode, SuccessMessage);
+    }
+
     public ResultDto(){}
 
     public ResultDto(EnumError enumError){

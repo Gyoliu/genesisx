@@ -13,6 +13,7 @@
     <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
     <result column="modifier_id" jdbcType="INTEGER" property="modifierId" />
     <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="user_id" jdbcType="INTEGER" property="userInfoId" />
   </resultMap>
 
   <resultMap id="BaseResultMapJoin"  extends="BaseResultMap" type="com.genesis.x.dao.entity.SysUser">
@@ -64,11 +65,11 @@
   <insert id="insert" parameterType="com.genesis.x.dao.entity.SysUser">
     insert into sys_user (id, username, password, 
       salt, locking, create_date, 
-      creater_id, modify_date, modifier_id
+      creater_id, modify_date, modifier_id, user_id
       )
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{salt,jdbcType=VARCHAR}, #{locking,jdbcType=BIT}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{createrId,jdbcType=INTEGER}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifierId,jdbcType=INTEGER}
+      #{createrId,jdbcType=INTEGER}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifierId,jdbcType=INTEGER}, #{userInfoId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.genesis.x.dao.entity.SysUser">

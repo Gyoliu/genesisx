@@ -5,6 +5,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -41,7 +42,7 @@ public class PasswordTest {
         System.out.println(UUID.randomUUID().toString().replaceAll("-", ""));
         System.out.println(UUID.randomUUID().toString().replaceAll("-", "").length());
         System.out.println(DateFormatUtils.format(new Date(), "yyyyMMddHHmmsss"));
-
+        System.out.println(new ArrayList<String>(){{add("asdfsad");add("asdfsad1");}});
     }
 
 }

@@ -6,7 +6,9 @@ public class SystemLog {
 
      public enum Type {
          LOGIN,
-         LOGOUT
+         LOGOUT,
+         REGISTER,
+         UPDATE_PASSWORD
      }
 
     private Integer id;

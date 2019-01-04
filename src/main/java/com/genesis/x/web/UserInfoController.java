@@ -6,13 +6,16 @@ import com.genesis.x.dto.ResultDto;
 import com.genesis.x.dto.SystemUserDto;
 import com.genesis.x.security.Oauth2Property;
 import com.genesis.x.service.ISysUserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * ClassName:UserInfoController
@@ -48,6 +51,12 @@ public class UserInfoController {
         }
         systemUserDto.setOAuth2AccessToken(oAuth2AccessToken);
         return new ResultDto(systemUserDto) ;
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultDto register(@RequestBody SystemUserDto systemUserDto){
+        ResultDto register = sysUserService.register(systemUserDto);
+        return register;
     }
 
 }

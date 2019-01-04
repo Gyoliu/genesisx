@@ -1,7 +1,10 @@
 package com.genesis.x.service;
 
 import com.genesis.x.dao.entity.SysUser;
+import com.genesis.x.dao.entity.SysUserInfo;
 import com.genesis.x.dto.Page;
+import com.genesis.x.dto.ResultDto;
+import com.genesis.x.dto.SystemUserDto;
 
 import java.util.List;
 
@@ -31,5 +34,11 @@ public interface ISysUserService {
     public int updateByPrimaryKey(SysUser record);
 
     int updatePasswordByUsername(SysUser record);
+
+    int updateUserInfo(SysUserInfo sysUserInfo);
+
+    int insertUserInfo(SysUserInfo sysUserInfo);
+
+    ResultDto register(SystemUserDto systemUserDto);
 
 }

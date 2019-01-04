@@ -33,6 +33,8 @@ public class SysUser {
 
     private Integer roleId;
 
+    private Integer userInfoId;
+
     private SysUserInfo createUser;
     private SysUserInfo modifyUser;
     private SysUserInfo userInfo;
