@@ -18,8 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,7 +101,7 @@ public class OauthController {
             if(!CollectionUtils.isEmpty(additionalInformation)){
                 Authentication authentication = (Authentication)additionalInformation.get(LoginAuthenticationFilter.authenticateKey);
                 SysUser sysUser = sysUserService.selectByUsername(authentication.getPrincipal().toString());
-                OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
+                WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
                 SystemUserDto systemUserDto = new SystemUserDto(sysUser);
                 systemUserDto.setIp(details.getRemoteAddress());
                 systemUserDtos.add(systemUserDto);

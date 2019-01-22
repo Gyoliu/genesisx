@@ -74,7 +74,9 @@ public class ControllerAop {
         ArrayList<Object> paramList = new ArrayList<>(objects.length);
         Arrays.asList(objects).forEach(obj -> {
             //obj.getClass().isAssignableFrom(AddAuthorizationWrapper.class) ||
-            if(obj.getClass().getSimpleName().contains("MultipartFile")){
+            if(obj.getClass().getSimpleName().contains("MultipartFile")
+                    || obj.getClass().getSimpleName().contains("RequestWrapper")
+                    || obj.getClass().getSimpleName().contains("ResponseWrapper")){
 
             } else {
                 paramList.add(obj);
