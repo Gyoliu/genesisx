@@ -97,6 +97,11 @@ public class SysUserServiceImpl implements ISysUserService {
     @Transactional(rollbackFor = Exception.class)
     public ResultDto register(SystemUserDto systemUserDto) {
 
+        SysUser sysUser1 = this.selectByUsername(systemUserDto.getUsername());
+        if(sysUser1 != null){
+            return new ResultDto(400,"该用户已存在！");
+        }
+
         //先插入用户信息
         SysUserInfo userInfo = systemUserDto.getUserInfo();
         this.insertUserInfo(userInfo);
