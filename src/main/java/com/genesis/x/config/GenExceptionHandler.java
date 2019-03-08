@@ -1,5 +1,6 @@
 package com.genesis.x.config;
 
+import com.alibaba.fastjson.JSON;
 import com.genesis.x.dto.ResultDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -8,10 +9,13 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author: liuxing
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @Description:
  */
 @Slf4j
+@ResponseBody
 @ControllerAdvice
 public class GenExceptionHandler {
 
@@ -55,8 +60,6 @@ public class GenExceptionHandler {
      * @return org.springframework.http.ResponseEntity
      */
     @ExceptionHandler(BindException.class)
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResultDto> validateErrorHandler(BindException e) {
         StringBuffer sb = new StringBuffer();
         BindingResult bindingResult = e.getBindingResult();
@@ -70,7 +73,17 @@ public class GenExceptionHandler {
             }
         }
         ResultDto result = new ResultDto(400, sb.toString());
-        log.error("[异常信息:{}]", result);
+        log.error("[BindException异常信息:{}]", result);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        BindingResult bindingResult = e.getBindingResult();
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        HashMap<String, String> map = new HashMap<>();
+        fieldErrors.forEach(fieldError -> map.put(fieldError.getField(), fieldError.getDefaultMessage()));
+        ResultDto result = new ResultDto(400, JSON.toJSONString(map));
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 

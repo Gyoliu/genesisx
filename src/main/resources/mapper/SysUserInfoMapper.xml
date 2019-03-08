@@ -10,7 +10,7 @@
     <result column="birth_date" jdbcType="TIMESTAMP" property="birthDate" />
     <result column="personal_signature" jdbcType="VARCHAR" property="personalSignature" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="creator_id" jdbcType="INTEGER" property="createrId" />
+    <result column="creator_id" jdbcType="INTEGER" property="creatorId" />
     <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
     <result column="modifier_id" jdbcType="INTEGER" property="modifierId" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
@@ -47,13 +47,14 @@
   <insert id="insert" parameterType="com.genesis.x.dao.entity.SysUserInfo" useGeneratedKeys="true" keyProperty="id">
     insert into sys_user_info (first_name, last_name,
       phone_number, email, birth_date, 
-      personal_signature, create_date, creater_id, 
-      modify_date, modifier_id, head_portrait
+      personal_signature, create_date, creator_id,
+      modify_date, modifier_id, head_portrait,remarks
       )
     values ( #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR},
       #{phoneNumber,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{birthDate,jdbcType=TIMESTAMP}, 
-      #{personalSignature,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createrId,jdbcType=INTEGER}, 
+      #{personalSignature,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=INTEGER},
       #{modifyDate,jdbcType=TIMESTAMP}, #{modifierId,jdbcType=INTEGER}, #{headPortrait,jdbcType=LONGVARBINARY}
+      , #{remarks,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.genesis.x.dao.entity.SysUserInfo">
@@ -83,8 +84,8 @@
       <if test="createDate != null">
         create_date,
       </if>
-      <if test="createrId != null">
-        creater_id,
+      <if test="creatorId != null">
+        creator_id,
       </if>
       <if test="modifyDate != null">
         modify_date,
@@ -94,6 +95,9 @@
       </if>
       <if test="headPortrait != null">
         head_portrait,
+      </if>
+      <if test="remarks != null">
+        remarks,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -121,8 +125,8 @@
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="createrId != null">
-        #{createrId,jdbcType=INTEGER},
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=INTEGER},
       </if>
       <if test="modifyDate != null">
         #{modifyDate,jdbcType=TIMESTAMP},
@@ -132,6 +136,9 @@
       </if>
       <if test="headPortrait != null">
         #{headPortrait,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -159,8 +166,8 @@
       <if test="createDate != null">
         create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="createrId != null">
-        creater_id = #{createrId,jdbcType=INTEGER},
+      <if test="creatorId != null">
+        creator_id = #{creatorId,jdbcType=INTEGER},
       </if>
       <if test="modifyDate != null">
         modify_date = #{modifyDate,jdbcType=TIMESTAMP},
@@ -170,6 +177,9 @@
       </if>
       <if test="headPortrait != null">
         head_portrait = #{headPortrait,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -183,9 +193,10 @@
       birth_date = #{birthDate,jdbcType=TIMESTAMP},
       personal_signature = #{personalSignature,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
-      creater_id = #{createrId,jdbcType=INTEGER},
+      creator_id = #{creatorId,jdbcType=INTEGER},
       modify_date = #{modifyDate,jdbcType=TIMESTAMP},
       modifier_id = #{modifierId,jdbcType=INTEGER},
+      remarks = #{remarks,jdbcType=VARCHAR},
       head_portrait = #{headPortrait,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -197,8 +208,9 @@
       email = #{email,jdbcType=VARCHAR},
       birth_date = #{birthDate,jdbcType=TIMESTAMP},
       personal_signature = #{personalSignature,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
-      creater_id = #{createrId,jdbcType=INTEGER},
+      creator_id = #{creatorId,jdbcType=INTEGER},
       modify_date = #{modifyDate,jdbcType=TIMESTAMP},
       modifier_id = #{modifierId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

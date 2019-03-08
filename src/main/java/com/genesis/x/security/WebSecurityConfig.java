@@ -128,6 +128,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.debug(true);
+        web.ignoring().antMatchers("/index.html", "/static/**", "/user/register");
     }
 
 }

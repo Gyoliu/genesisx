@@ -9,6 +9,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,12 +35,15 @@ public class SystemUserDto {
     private Integer id;
 
     private String ip;
+
+    @NotEmpty(message = "登入用户名不能为空", groups = {FormValidateGroup.Add.class})
     private String username;
 
     private Boolean locking;
 
     private Boolean enable;
 
+    @NotNull(message = "用户信息不能为空", groups = {FormValidateGroup.Add.class})
     private SysUserInfo userInfo;
 
     private SysRole sysRole;

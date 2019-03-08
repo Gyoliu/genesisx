@@ -2,6 +2,7 @@ package com.genesis.x.web;
 
 import com.genesis.x.dao.entity.SysUser;
 import com.genesis.x.dto.EnumError;
+import com.genesis.x.dto.FormValidateGroup;
 import com.genesis.x.dto.ResultDto;
 import com.genesis.x.dto.SystemUserDto;
 import com.genesis.x.security.Oauth2Property;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -54,7 +56,7 @@ public class UserInfoController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultDto register(@RequestBody SystemUserDto systemUserDto){
+    public ResultDto register(@RequestBody @Validated(FormValidateGroup.Add.class) SystemUserDto systemUserDto){
         ResultDto register = sysUserService.register(systemUserDto);
         return register;
     }

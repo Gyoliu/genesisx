@@ -25,7 +25,7 @@ public class SysUser {
 
     private Date createDate;
 
-    private Integer createrId;
+    private Integer creatorId;
 
     private Date modifyDate;
 

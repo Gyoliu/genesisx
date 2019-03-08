@@ -20,9 +20,11 @@ public class SysUserInfo {
 
     private String personalSignature;
 
+    private String remarks;
+
     private Date createDate;
 
-    private Integer createrId;
+    private Integer creatorId;
 
     private Date modifyDate;
 
