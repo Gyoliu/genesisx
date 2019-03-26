@@ -5,7 +5,7 @@
         <property name="rootPath" value="/app/itsm-web-service/logs" />
     -->
 
-    <property name="rootPath" value="/app/genesisx" />
+    <property name="rootPath" value="/home/admin/xing/logs" />
     <property name="baseFile" value="genesis"></property>
     <property name="log.root.level" value="INFO"></property>
 

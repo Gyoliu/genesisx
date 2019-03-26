@@ -94,3 +94,15 @@ AccessDecisionManager是用于访问控制的，它决定用户是否可以访�
 
 AccessDecisionVoter
 AccessDecisionVoter是投票器，在授权的时通过投票的方式来决定用户是否可以访问，这里涉及到投票规则。
+
+
+### WebSocket connection to 'ws://localhost:1111/socket' failed: Error during WebSocket handshake: Unexpected response code: 200
+```
+解决方案: registry.addEndpoint("/socket").withSockJS()
+改成：registry.addEndpoint("/socket");
+```
+
+#### org.springframework.messaging.simp.annotation.support.MissingSessionUserException: No "user" header in message
+```
+原因：没有认证用户
+```

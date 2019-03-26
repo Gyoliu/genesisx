@@ -97,14 +97,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 , oauth2Property.getClientId(), oauth2Property.getSecret(), homeUrl));
 
         http.httpBasic()
-                .and().csrf().disable().anonymous().and()
-                .formLogin()
+                .and().csrf().disable().anonymous()
+                /*.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                        o.setSecurityMetadataSource(customMetadataSource);
+                        o.setAccessDecisionManager(urlAccessDecisionManager);
+                        return o;
+                    }
+                })*/
+                .and().formLogin()
                 .successHandler(new AuthenticationSuccessHandler(homeUrl)).failureHandler(new AuthenticationFailureHandler())
                 .loginPage(loginUrl).permitAll()
                 .and().logout().addLogoutHandler(new CustomLogoutHandler()).deleteCookies(cookieName, "JSESSIONID")
                 .invalidateHttpSession(true).clearAuthentication(true)
                 .logoutSuccessHandler(new CustomLogoutSuccessHandler(loginUrl)).permitAll()
                 .and().authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+//                .and().authorizeRequests().antMatchers("/socket/**").permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
                 //.and().exceptionHandling().accessDeniedHandler(new CustomAccessDeineHandler()).authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 //用户只能存在一个
@@ -128,7 +137,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.debug(true);
-        web.ignoring().antMatchers("/index.html", "/static/**", "/user/register");
+        web.ignoring().antMatchers("/index.html", "/static/**", "/user/register", "/socket/**");
     }
 
 }

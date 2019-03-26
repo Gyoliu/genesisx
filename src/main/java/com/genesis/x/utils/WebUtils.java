@@ -6,11 +6,14 @@ import com.genesis.x.dao.entity.SysUser;
 import com.genesis.x.security.Oauth2Property;
 import com.genesis.x.service.ISysUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -40,7 +43,7 @@ public class WebUtils {
         }
     }
 
-    public static HttpSession setHttpSession() {
+    public static HttpSession getHttpSession() {
         HttpServletRequest request = getRequest();
         HttpSession session = request.getSession(false);
         return session;
@@ -63,6 +66,37 @@ public class WebUtils {
         }
         SystemUserDto systemUserDto = new SystemUserDto(sysUser, oAuth2AccessToken);
         return systemUserDto;
+    }
+
+    public static Authentication getSessionUserByToken(String token) {
+        if(StringUtils.isEmpty(token)){
+            throw new RuntimeException(HttpStatus.UNAUTHORIZED.toString());
+        }
+        InMemoryTokenStore inMemoryTokenStore = SpringContextHolder.getBean(InMemoryTokenStore.class);
+        OAuth2Authentication oAuth2Authentication = inMemoryTokenStore.readAuthentication(token);
+        if(oAuth2Authentication == null){
+            return null;
+        }
+        Authentication userAuthentication = oAuth2Authentication.getUserAuthentication();
+        return userAuthentication;
+    }
+
+    public static void removeToken(String token) {
+        if(StringUtils.isEmpty(token)){
+            throw new RuntimeException(HttpStatus.UNAUTHORIZED.toString());
+        }
+        InMemoryTokenStore inMemoryTokenStore = SpringContextHolder.getBean(InMemoryTokenStore.class);
+        inMemoryTokenStore.removeAccessToken(token);
+    }
+
+    public static void removeCurrentToken() {
+        String authorization = getRequest().getHeader("Authorization");
+        if(StringUtils.isEmpty(authorization)){
+            throw new RuntimeException(HttpStatus.UNAUTHORIZED.toString());
+        }
+        authorization = authorization.replace("bearer ", "");
+        InMemoryTokenStore inMemoryTokenStore = SpringContextHolder.getBean(InMemoryTokenStore.class);
+        inMemoryTokenStore.removeAccessToken(authorization);
     }
 
 }

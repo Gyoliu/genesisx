@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.genesis.x.GenesisApplicationTests;
 import com.genesis.x.dao.entity.SystemMenu;
 import com.genesis.x.service.ISystemMenuService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @Date: 2018/12/12 15:34
  * @Description:
  */
+@Ignore
 public class SystemMenuImplTest extends GenesisApplicationTests {
 
     @Autowired

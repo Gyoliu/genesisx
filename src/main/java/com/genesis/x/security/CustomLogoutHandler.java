@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.genesis.x.config.SpringContextHolder;
 import com.genesis.x.dao.entity.SystemLog;
 import com.genesis.x.service.ISystemLogService;
+import com.genesis.x.utils.WebUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -29,5 +30,8 @@ public class CustomLogoutHandler implements LogoutHandler {
             systemLog.setCreator(Integer.parseInt(userId));
         }
         bean.insert(systemLog);
+
+        // 移除token
+        WebUtils.removeCurrentToken();
     }
 }
