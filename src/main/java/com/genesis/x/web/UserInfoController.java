@@ -7,6 +7,7 @@ import com.genesis.x.dto.ResultDto;
 import com.genesis.x.dto.SystemUserDto;
 import com.genesis.x.security.Oauth2Property;
 import com.genesis.x.service.ISysUserService;
+import com.genesis.x.vo.ResetPasswordVo;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -58,6 +59,12 @@ public class UserInfoController {
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultDto register(@RequestBody @Validated(FormValidateGroup.Add.class) SystemUserDto systemUserDto){
         ResultDto register = sysUserService.register(systemUserDto);
+        return register;
+    }
+
+    @RequestMapping(value = "/reset/password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultDto resetPassword(@RequestBody @Validated ResetPasswordVo resetPasswordVo){
+        ResultDto register = sysUserService.resetPassword(resetPasswordVo);
         return register;
     }
 

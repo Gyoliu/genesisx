@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 /**
@@ -26,7 +27,7 @@ public class PasswordTest {
         System.out.println(matches);
 
         //前端提交的密码 s
-        String password = "123456";
+        String password = "1234567";
         String s = DigestUtils.md5Hex(password);
         System.out.println(s);
 
@@ -43,6 +44,14 @@ public class PasswordTest {
         System.out.println(UUID.randomUUID().toString().replaceAll("-", "").length());
         System.out.println(DateFormatUtils.format(new Date(), "yyyyMMddHHmmsss"));
         System.out.println(new ArrayList<String>(){{add("asdfsad");add("asdfsad1");}});
+    }
+
+    @Test
+    public void testLinkedMap(){
+        LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+        map.put(3, "3");
+        map.put(1, "1");
+        map.forEach((k, v) -> System.out.println(k));
     }
 
 }

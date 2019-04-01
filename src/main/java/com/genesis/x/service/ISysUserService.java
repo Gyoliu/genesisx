@@ -5,6 +5,7 @@ import com.genesis.x.dao.entity.SysUserInfo;
 import com.genesis.x.dto.Page;
 import com.genesis.x.dto.ResultDto;
 import com.genesis.x.dto.SystemUserDto;
+import com.genesis.x.vo.ResetPasswordVo;
 
 import java.util.List;
 
@@ -41,4 +42,5 @@ public interface ISysUserService {
 
     ResultDto register(SystemUserDto systemUserDto);
 
+    ResultDto resetPassword(ResetPasswordVo resetPasswordVo);
 }

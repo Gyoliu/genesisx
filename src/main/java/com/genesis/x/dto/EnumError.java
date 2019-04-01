@@ -1,7 +1,5 @@
 package com.genesis.x.dto;
 
-import lombok.Data;
-
 /**
  *
  */

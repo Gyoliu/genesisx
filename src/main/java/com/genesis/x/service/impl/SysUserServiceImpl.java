@@ -8,13 +8,15 @@ import com.genesis.x.dao.entity.SystemLog;
 import com.genesis.x.dto.ResultDto;
 import com.genesis.x.dto.SystemUserDto;
 import com.genesis.x.service.ISystemLogService;
+import com.genesis.x.utils.PasswordUtils;
+import com.genesis.x.vo.ResetPasswordVo;
 import com.github.pagehelper.PageHelper;
 import com.genesis.x.dao.entity.SysUser;
 import com.genesis.x.dto.Page;
 import com.genesis.x.service.ISysUserService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -113,9 +115,8 @@ public class SysUserServiceImpl implements ISysUserService {
         sysUser.setEnable(true);
         sysUser.setRoleId(2);
         sysUser.setPassword(INIT_PASSWORD);
-        String md5Pwd = DigestUtils.md5Hex(sysUser.getPassword());
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodePwd = passwordEncoder.encode(md5Pwd);
+        // 加密密码
+        String encodePwd = PasswordUtils.encode(sysUser.getPassword());
         sysUser.setPassword(encodePwd);
         sysUser.setUserInfoId(userInfo.getId());
         this.insert(sysUser);
@@ -131,6 +132,41 @@ public class SysUserServiceImpl implements ISysUserService {
         Map<String, String> map = new HashMap<>(1);
         map.put("password", INIT_PASSWORD);
         return new ResultDto(map);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDto resetPassword(ResetPasswordVo resetPasswordVo) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null){
+            return new ResultDto(401, "未登入");
+        }
+        String name = authentication.getName();
+        SysUser sysUser = this.selectByUsername(name);
+        if(sysUser == null){
+            return new ResultDto(400, "用户不存在");
+        }
+        boolean matches = PasswordUtils.matches(resetPasswordVo.getPassword(), sysUser.getPassword());
+        if(!matches){
+            return new ResultDto(400, "旧密码不正确");
+        }
+        // 这个不要md5 前端已经md5过
+        String encode = resetPasswordVo.getResetPassword();
+        SysUser sysUser1 = new SysUser();
+        sysUser1.setUsername(name);
+        sysUser1.setPassword(encode);
+        sysUser1.setModifierId(sysUser.getId());
+        sysUser1.setModifyDate(new Date());
+        this.updatePasswordByUsername(sysUser1);
+
+        SystemLog systemLog = new SystemLog();
+        systemLog.setCreator(sysUser.getId());
+        systemLog.setType("update_password");
+        systemLog.setBeforeData(JSON.toJSONString(sysUser));
+        systemLog.setAfterData(JSON.toJSONString(resetPasswordVo));
+        systemLogService.insert(systemLog);
+
+        return ResultDto.success();
     }
 
     @Override
