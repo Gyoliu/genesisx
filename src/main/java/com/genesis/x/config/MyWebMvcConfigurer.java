@@ -50,7 +50,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .maxAge(3600L)
-                .allowedOrigins(host)
+                .allowedOrigins(host.split(","))
                 .allowedHeaders("*")
                 .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.OPTIONS.name())
                 .allowCredentials(true)

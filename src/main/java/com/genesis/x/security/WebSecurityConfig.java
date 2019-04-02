@@ -89,8 +89,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         list.add(new XFrameOptionsHeaderWriter());
         http.addFilter(new CustomHeaderWriterFilter(list));
 
-        String loginUrl = host + loginPage;
-        String homeUrl = host + homePage;
+        String[] split = host.split(",");
+        String loginUrl = split[0] + loginPage;
+        String homeUrl = split[0] + homePage;
 
         http.addFilter(new LoginAuthenticationFilter(super.authenticationManager()
                 , clientDetailsService, authorizationServerConfiguration.getTokenGranter()

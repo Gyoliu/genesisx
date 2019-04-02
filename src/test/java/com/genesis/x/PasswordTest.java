@@ -27,7 +27,7 @@ public class PasswordTest {
         System.out.println(matches);
 
         //前端提交的密码 s
-        String password = "1234567";
+        String password = "123456";
         String s = DigestUtils.md5Hex(password);
         System.out.println(s);
 
