@@ -50,24 +50,7 @@ public class MyBlogServiceImpl implements IMyBlogService {
     @Override
     public PageInfo<MyBlog> selectBlogList(MyBlog record, Page page) {
         PageHelper.startPage(page.getNum(), page.getSize(), true);
-        if(CollectionUtils.isEmpty(page.getOrderBy())){
-            PageHelper.orderBy(" create_date " + Page.OrderByEnum.DESC.name());
-        } else {
-            List<String> orderBy = page.getOrderBy();
-            List<Boolean> asc = page.getAsc();
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i=0;i<orderBy.size();i++){
-                boolean bo = false;
-                if(CollectionUtils.isEmpty(asc) || asc.size() <= i){
-                    bo = true;
-                }
-                stringBuilder.append(orderBy.get(i) + " ").append(bo ? Page.OrderByEnum.DESC.name() + " ,": Page.OrderByEnum.ASC.name() + " ,");
-            }
-            if(stringBuilder.length() > 0){
-                stringBuilder = stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-            }
-            PageHelper.orderBy(stringBuilder.toString());
-        }
+        PageHelper.orderBy(page.buildOrderBy());
         List<MyBlog> myBlogs = myBlogMapper.selectBlogList(record);
         PageInfo<MyBlog> myBlogPageInfo = new PageInfo<>(myBlogs);
         return myBlogPageInfo;

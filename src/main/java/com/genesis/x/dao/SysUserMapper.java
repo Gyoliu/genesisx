@@ -17,7 +17,7 @@ public interface SysUserMapper {
 
     SysUser selectByUserJoin(Integer id);
 
-    List<SysUser> selectUsers();
+    List<SysUser> selectUsers(SysUser record);
 
     int updateByPrimaryKeySelective(SysUser record);
 

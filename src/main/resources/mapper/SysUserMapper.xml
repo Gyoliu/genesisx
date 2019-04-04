@@ -52,10 +52,24 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectUsers" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectUsers" parameterType="com.genesis.x.dao.entity.SysUser" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from sys_user
+    <where>
+      <if test="roleId != null">
+        role_id = #{roleId}
+      </if>
+      <if test="username != null">
+        username = #{username}
+      </if>
+      <if test="locking != null">
+        locking = #{locking}
+      </if>
+      <if test="enable != null">
+        enable = #{enable}
+      </if>
+    </where>
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

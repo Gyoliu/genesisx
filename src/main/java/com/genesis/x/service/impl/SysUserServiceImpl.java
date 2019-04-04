@@ -73,9 +73,9 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     @Override
-    public List<SysUser> selectUsers(Page page){
+    public List<SysUser> selectUsers(SysUser record, Page page){
         PageHelper.startPage(page.getNum(), page.getSize(), true);
-        return sysUserMapper.selectUsers();
+        return sysUserMapper.selectUsers(record);
     }
 
     @Override

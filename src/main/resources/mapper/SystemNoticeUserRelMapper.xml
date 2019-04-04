@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.genesis.x.dao.SystemNoticeUserRelMapper">
+  <resultMap id="BaseResultMap" type="com.genesis.x.dao.entity.SystemNoticeUserRel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="notice_id" jdbcType="INTEGER" property="noticeId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="notice_type" jdbcType="INTEGER" property="noticeType" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <resultMap id="BaseResultMapNotice" type="com.genesis.x.dto.SystemNoticeDto">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="status" jdbcType="INTEGER" property="status" />
+    <id column="notice_type" jdbcType="INTEGER" property="noticeType" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMapNotice" id="ResultMapNoticeWithBLOBs" type="com.genesis.x.dto.SystemNoticeDto">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, notice_id, user_id, status, notice_type,creator,create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_notice_user_rel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="countUserNotice" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel">
+    select count(1)
+    from sys_notice_user_rel
+    where user_id = #{userId,jdbcType=INTEGER} and status = #{status,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectUserNotice" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel" resultMap="BaseResultMapNotice">
+    select a.*, b.status, b.nitice_type
+    from sys_notice_user_rel a INNER JOIN sys_notice b on a.notice_id = b.id
+    where user_id = #{userId,jdbcType=INTEGER} and status = #{status,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_notice_user_rel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel">
+    insert into sys_notice_user_rel (id, notice_id, user_id, status, notice_type,create_time,creator)
+    values (#{id,jdbcType=INTEGER}, #{noticeId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{noticeType,jdbcType=INTEGER}, #{createTime}, #{creator,jdbcType=INTEGER})
+  </insert>
+
+  <insert id="insertBatch" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel">
+    insert into sys_notice_user_rel (notice_id, user_id,status, notice_type,create_time,creator)
+    values
+    <foreach collection ="list" item="item" index="index" separator =",">
+      ( #{item.noticeId,jdbcType=INTEGER}, #{item.userId,jdbcType=INTEGER},#{item.status,jdbcType=INTEGER}, #{item.noticeType,jdbcType=INTEGER}
+      , #{createTime}, #{creator,jdbcType=INTEGER}
+      )
+    </foreach >
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel">
+    insert into sys_notice_user_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="noticeId != null">
+        notice_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="noticeType != null">
+        notice_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="noticeId != null">
+        #{noticeId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="noticeType != null">
+        #{noticeType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel">
+    update sys_notice_user_rel
+    <set>
+      <if test="noticeId != null">
+        notice_id = #{noticeId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="noticeType != null">
+        notice_type = #{noticeType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateNoticeUserRel" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel">
+    update sys_notice_user_rel
+    <set>
+      <if test="noticeId != null">
+        notice_id = #{noticeId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="noticeType != null">
+        notice_type = #{noticeType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where notice_id = #{noticeId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel">
+    update sys_notice_user_rel
+    set notice_id = #{noticeId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      notice_type = #{noticeType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

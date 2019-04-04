@@ -28,7 +28,7 @@ public interface ISysUserService {
 
     public SysUser selectByUserJoin(Integer id);
 
-    public List<SysUser> selectUsers(Page page);
+    public List<SysUser> selectUsers(SysUser record, Page page);
 
     public int updateByPrimaryKeySelective(SysUser record);
 
