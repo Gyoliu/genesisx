@@ -10,10 +10,9 @@ import com.genesis.x.utils.WebUtils;
 import com.genesis.x.vo.QueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +33,7 @@ public class SystemNoticeController {
      * @param systemNotice
      * @return
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/addNotice", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultDto insertNotices(@RequestBody SystemNotice systemNotice){
         ResultDto resultDto = systemNoticeService.insertNotices(systemNotice);
@@ -42,6 +42,12 @@ public class SystemNoticeController {
 
     @PostMapping(value = "/countUserNotice", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultDto countUserNotice(@RequestBody SystemNoticeUserRel systemNoticeUserRel){
+        if(StringUtils.isEmpty(systemNoticeUserRel.getUserId())){
+            systemNoticeUserRel.setUserId(WebUtils.getSessionUser().getId());
+        }
+        if(systemNoticeUserRel.getStatus() == null){
+            systemNoticeUserRel.setStatus(0);
+        }
         ResultDto resultDto = systemNoticeService.countUserNotice(systemNoticeUserRel);
         return resultDto;
     }
@@ -52,6 +58,12 @@ public class SystemNoticeController {
         QueryUtils.convert2Dto(queryVo, record);
         record.setUserId(WebUtils.getSessionUser().getId());
         ResultDto resultDto = systemNoticeService.selectUserNotice(record, queryVo.getPage());
+        return resultDto;
+    }
+
+    @GetMapping(value = "/content", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultDto selectNoticeContent(@RequestParam("id") Integer id){
+        ResultDto resultDto = systemNoticeService.selectNoticeById(id);
         return resultDto;
     }
 

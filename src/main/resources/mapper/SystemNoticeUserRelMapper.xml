@@ -13,6 +13,7 @@
 
   <resultMap id="BaseResultMapNotice" type="com.genesis.x.dto.SystemNoticeDto">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="notice_Id" jdbcType="INTEGER" property="noticeId" />
     <id column="status" jdbcType="INTEGER" property="status" />
     <id column="notice_type" jdbcType="INTEGER" property="noticeType" />
     <result column="title" jdbcType="VARCHAR" property="title" />
@@ -33,14 +34,14 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="countUserNotice" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel">
+  <select id="countUserNotice" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel" resultType="java.lang.Integer">
     select count(1)
     from sys_notice_user_rel
     where user_id = #{userId,jdbcType=INTEGER} and status = #{status,jdbcType=INTEGER}
   </select>
 
-  <select id="selectUserNotice" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel" resultMap="BaseResultMapNotice">
-    select a.*, b.status, b.nitice_type
+  <select id="selectUserNotice" parameterType="com.genesis.x.dao.entity.SystemNoticeUserRel" resultMap="ResultMapNoticeWithBLOBs">
+    select a.id, a.notice_id, a.user_id,a.notice_type, a.status,a.create_time, b.title,b.content
     from sys_notice_user_rel a INNER JOIN sys_notice b on a.notice_id = b.id
     where user_id = #{userId,jdbcType=INTEGER} and status = #{status,jdbcType=INTEGER}
   </select>
@@ -60,7 +61,7 @@
     values
     <foreach collection ="list" item="item" index="index" separator =",">
       ( #{item.noticeId,jdbcType=INTEGER}, #{item.userId,jdbcType=INTEGER},#{item.status,jdbcType=INTEGER}, #{item.noticeType,jdbcType=INTEGER}
-      , #{createTime}, #{creator,jdbcType=INTEGER}
+      , #{item.createTime}, #{item.creator,jdbcType=INTEGER}
       )
     </foreach >
   </insert>

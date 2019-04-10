@@ -49,9 +49,12 @@ public class SystemNoticeServiceImpl implements ISystemNoticeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultDto insertNotices(SystemNotice systemNotice) {
+        Integer currentUserId = WebUtils.getSessionUser().getId();
+        systemNotice.setCreator(currentUserId);
+        systemNotice.setCreateTime(new Date());
         systemNoticeMapper.insert(systemNotice);
         Integer noticeId = systemNotice.getId();
-        Integer currentUserId = WebUtils.getSessionUser().getId();
+
         Integer noticeType = systemNotice.getNoticeType();
         if(SystemNotice.NoticeType.ALL.getType() == noticeType){
             SysUser sysUser = new SysUser();
@@ -108,6 +111,12 @@ public class SystemNoticeServiceImpl implements ISystemNoticeService {
         List<SystemNoticeDto> systemNoticeDtos = systemNoticeUserRelMapper.selectUserNotice(systemNoticeUserRel);
         PageInfo<SystemNoticeDto> pageInfo = new PageInfo<>(systemNoticeDtos);
         return new ResultDto(pageInfo);
+    }
+
+    @Override
+    public ResultDto selectNoticeById(Integer noticeId) {
+        SystemNotice systemNotice = systemNoticeMapper.selectByPrimaryKey(noticeId);
+        return new ResultDto(systemNotice);
     }
 
     @Override

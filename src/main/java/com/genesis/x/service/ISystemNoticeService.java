@@ -39,6 +39,8 @@ public interface ISystemNoticeService {
 
     ResultDto selectUserNotice(SystemNoticeUserRel systemNoticeUserRel, Page page);
 
+    ResultDto selectNoticeById(Integer noticeId);
+
     /**
      * 标记已读
      * @param systemNoticeUserRel

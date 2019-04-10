@@ -77,7 +77,7 @@ ADD COLUMN `enable`  bit(1) NULL AFTER `salt`;
 
 -- 系统公告表
 CREATE TABLE `sys_notice` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `content` longtext,
   `creator` int(11) DEFAULT NULL,

@@ -14,6 +14,8 @@ public class SystemNoticeDto {
 
     private Integer id;
 
+    private Integer noticeId;
+
     private String title;
 
     private Integer creator;

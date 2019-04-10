@@ -31,10 +31,10 @@ public class GenExceptionHandler {
         String message = "";
         if(exception.getCause() != null){
             message = exception.getCause().getMessage();
-            log.error("[异常信息:{}]", message);
+            log.error("[异常信息:{}]", message, exception);
         } else {
             message = exception.getMessage();
-            log.error("[异常信息:{}]", message);
+            log.error("[异常信息:{}]", message, exception);
         }
         return message;
     }
@@ -73,7 +73,7 @@ public class GenExceptionHandler {
             }
         }
         ResultDto result = new ResultDto(400, sb.toString());
-        log.error("[BindException异常信息:{}]", result);
+        log.error("[BindException异常信息:{}]", result, e);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
@@ -84,6 +84,7 @@ public class GenExceptionHandler {
         HashMap<String, String> map = new HashMap<>();
         fieldErrors.forEach(fieldError -> map.put(fieldError.getField(), fieldError.getDefaultMessage()));
         ResultDto result = new ResultDto(400, JSON.toJSONString(map));
+        log.error("[MethodArgumentNotValidException异常信息:{}]", result, e);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 

@@ -58,16 +58,16 @@
     from sys_user
     <where>
       <if test="roleId != null">
-        role_id = #{roleId}
+        and role_id = #{roleId}
       </if>
       <if test="username != null">
-        username = #{username}
+        and username = #{username}
       </if>
       <if test="locking != null">
-        locking = #{locking}
+        and locking =#{locking,jdbcType=BIT}
       </if>
       <if test="enable != null">
-        enable = #{enable}
+        and enable = #{enable,jdbcType=BIT}
       </if>
     </where>
   </select>

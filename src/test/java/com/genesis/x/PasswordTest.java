@@ -5,10 +5,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author: liuxing
@@ -48,10 +46,7 @@ public class PasswordTest {
 
     @Test
     public void testLinkedMap(){
-        LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
-        map.put(3, "3");
-        map.put(1, "1");
-        map.forEach((k, v) -> System.out.println(k));
+
     }
 
 }
