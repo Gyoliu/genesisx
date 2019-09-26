@@ -84,8 +84,7 @@ public class WebsocketSecurityConfiguration extends AbstractSecurityWebSocketMes
                         throw new RuntimeException(HttpStatus.UNAUTHORIZED.toString());
                     }
                 } else if(StompCommand.DISCONNECT.equals(accessor.getCommand())){
-                    String name = accessor.getUser().getName();
-                    log.error("StompCommand.DISCONNECT:{}, message:{}", name, accessor.getMessage());
+                    log.error("StompCommand.DISCONNECT, message:{}", accessor.getMessage());
                 } else if(StompCommand.ERROR.equals(accessor.getCommand())){
                     String name = accessor.getUser().getName();
                     log.error("StompCommand.ERROR:{}, message:{}", name, accessor.getMessage());

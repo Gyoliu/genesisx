@@ -1,7 +1,7 @@
 package com.genesis.x.dto;
 
 /**
- *
+ * 系统错误业务编码
  */
 public enum EnumError {
 

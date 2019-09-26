@@ -31,7 +31,7 @@ import java.util.Map;
 @Slf4j
 public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    public static final String authenticateKey = "authenticate";
+    public static final String AUTHENTICATE_KEY = "authenticate";
 
     private ClientDetailsService clientDetailsService;
     private TokenGranter tokenGranter;

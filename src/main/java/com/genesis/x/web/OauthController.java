@@ -99,7 +99,7 @@ public class OauthController {
         tokensByClientId.forEach(x -> {
             Map<String, Object> additionalInformation = x.getAdditionalInformation();
             if(!CollectionUtils.isEmpty(additionalInformation)){
-                Authentication authentication = (Authentication)additionalInformation.get(LoginAuthenticationFilter.authenticateKey);
+                Authentication authentication = (Authentication)additionalInformation.get(LoginAuthenticationFilter.AUTHENTICATE_KEY);
                 SysUser sysUser = sysUserService.selectByUsername(authentication.getPrincipal().toString());
                 WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
                 SystemUserDto systemUserDto = new SystemUserDto(sysUser);

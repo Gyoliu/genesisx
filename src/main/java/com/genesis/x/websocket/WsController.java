@@ -1,10 +1,10 @@
 package com.genesis.x.websocket;
 
 import com.alibaba.fastjson.JSON;
+import com.genesis.x.vo.MessageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
@@ -24,13 +24,10 @@ public class WsController {
 
     @MessageMapping("/ws/chat")
     public void handleChat(Principal principal, String msg) {
-        messagingTemplate.convertAndSendToUser(principal.getName(), "/queue/chat", JSON.toJSONString(principal) + "定义：" + msg);
-    }
-
-    @MessageMapping("/ws/nf")
-    @SendTo("/topic/nf")
-    public String handleNF(String msg) {
-        return "系统消息:" + msg;
+        MessageVo messageVo = JSON.parseObject(msg, MessageVo.class);
+        messageVo.setSelf(false);
+        messageVo.setFrom(principal.getName());
+        messagingTemplate.convertAndSendToUser(messageVo.getTo(), "/queue/chat", JSON.toJSONString(messageVo));
     }
 
     @MessageExceptionHandler(Exception.class)

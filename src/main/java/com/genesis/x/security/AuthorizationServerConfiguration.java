@@ -27,9 +27,12 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    public static final String resourceId = "oauth2-resource";
+    public static final String RESOURCE_ID = "oauth2-resource";
 
-    @Autowired @Qualifier("authenticationManagerBean")//认证方式
+    /**
+     * //认证方式
+     */
+    @Autowired @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager ;
 
     @Autowired
@@ -78,7 +81,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         security.allowFormAuthenticationForClients()
                 .checkTokenAccess("isAuthenticated()")
                 .tokenKeyAccess("permitAll()")
-                .realm(resourceId)
+                .realm(RESOURCE_ID)
                 .accessDeniedHandler(new CustomAccessDeineHandler())
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
         ;
@@ -94,7 +97,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .scopes("all")
                 .autoApprove(true)
                 .autoApprove("all")
-                .resourceIds(resourceId)
+                .resourceIds(RESOURCE_ID)
                 .accessTokenValiditySeconds(oauth2Property.getAccessTokenValiditySeconds())
                 .refreshTokenValiditySeconds(oauth2Property.getRefreshTokenValiditySeconds())
         ;

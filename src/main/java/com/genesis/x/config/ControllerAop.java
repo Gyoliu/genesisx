@@ -51,13 +51,13 @@ public class ControllerAop {
             obj = proceedingJoinPoint.proceed();
             watch.stop();
         } finally {
-            log.info("[服务执行耗时：{}毫秒] - [服务请求路径：{}] - [服务请求方式：{}] - [服务接口方法：{}] - [参数：{}]",
+            log.info("[服务执行耗时：{}毫秒] - [服务请求路径：{}] - [服务请求方式：{}] - [服务接口方法：{}] - [参数：{}] - 返回值：{}",
                     watch.getTotalTimeMillis(),
                     url + (StringUtils.hasText(queryString) ? ("?" + queryString) : ""),
                     method,
                     proceedingJoinPoint.getSignature().toString(),
-                    paramToJson(proceedingJoinPoint.getArgs()));
-            log.info("返回值：{}", obj != null ? JSON.toJSONString(obj) : "");
+                    paramToJson(proceedingJoinPoint.getArgs()),
+                    obj != null ? JSON.toJSONString(obj) : "");
         }
         return obj;
     }

@@ -1,5 +1,6 @@
 package com.genesis.x;
 
+import com.github.houbb.opencc4j.util.ZhConverterUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.Test;
@@ -46,7 +47,9 @@ public class PasswordTest {
 
     @Test
     public void testLinkedMap(){
-
+        String s = "陈艳";
+        System.out.println(ZhConverterUtil.convertToSimple(s));
+        System.out.println(ZhConverterUtil.convertToTraditional(s));
     }
 
 }

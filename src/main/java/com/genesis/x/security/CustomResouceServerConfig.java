@@ -62,6 +62,6 @@ public class CustomResouceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.resourceId(AuthorizationServerConfiguration.resourceId).stateless(true);
+        resources.resourceId(AuthorizationServerConfiguration.RESOURCE_ID).stateless(true);
     }
 }

@@ -1,4 +1,4 @@
-package com.genesis.x.config;
+package com.genesis.x.exception;
 
 import com.alibaba.fastjson.JSON;
 import com.genesis.x.dto.ResultDto;
@@ -31,11 +31,10 @@ public class GenExceptionHandler {
         String message = "";
         if(exception.getCause() != null){
             message = exception.getCause().getMessage();
-            log.error("[异常信息:{}]", message, exception);
         } else {
             message = exception.getMessage();
-            log.error("[异常信息:{}]", message, exception);
         }
+        log.error("[异常信息:{}]", message, exception);
         return message;
     }
 
@@ -51,6 +50,14 @@ public class GenExceptionHandler {
         String message = this.buildMessage(exception);
         ResultDto result = new ResultDto(500, message);
         return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({BasicException.class})
+    public ResponseEntity<ResultDto> exceptionHandler(BasicException exception) {
+        String message = this.buildMessage(exception);
+        ResultDto result = new ResultDto(exception.getCode(), message);
+        HttpStatus resolve = HttpStatus.resolve(exception.getCode());
+        return new ResponseEntity<>(result, resolve);
     }
 
     /**

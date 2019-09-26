@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * liuxing
+ * @author liuxing
  * @param <T>
  */
 @Data
@@ -17,8 +17,9 @@ public class ResultDto<T> implements Serializable {
 
     private static final long serialVersionUID = 7934727220113660197L;
 
-    public static final int SuccessCode = 200;
-    public static final String SuccessMessage = "操作成功！";
+    public static final int SUCCESS_CODE = 200;
+    public static final String SUCCESS_MESSAGE = "操作成功！";
+    public static final ResultDto SUCCESS_RESULT = new ResultDto(SUCCESS_CODE, SUCCESS_MESSAGE);
 
     private static final String PATTERN = "yyyy-MM-dd HH:mm:sss";
 
@@ -31,10 +32,10 @@ public class ResultDto<T> implements Serializable {
     private String timestamp;
 
     public static ResultDto success(){
-        return new ResultDto(SuccessCode, SuccessMessage);
+        return new ResultDto(SUCCESS_CODE, SUCCESS_MESSAGE);
     }
 
-    public ResultDto(){}
+    private ResultDto(){}
 
     public ResultDto(EnumError enumError){
         this.code = enumError.getCode();
@@ -63,8 +64,8 @@ public class ResultDto<T> implements Serializable {
     }
 
     public ResultDto(T data) {
-        this.code = SuccessCode;
-        this.message = SuccessMessage;
+        this.code = SUCCESS_CODE;
+        this.message = SUCCESS_MESSAGE;
         this.data = data;
         this.timestamp = DateFormatUtils.format(new Date(), PATTERN);
     }

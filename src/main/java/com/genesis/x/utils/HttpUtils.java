@@ -43,8 +43,7 @@ public class HttpUtils {
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
         if (request.getHeader("accept").indexOf("application/json") > -1
-                || (request.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With").equals(
-                "XMLHttpRequest"))) {
+                || (request.getHeader("X-Requested-With") != null && "XMLHttpRequest".equals(request.getHeader("X-Requested-With")))) {
             return true;
         }
         return false;
