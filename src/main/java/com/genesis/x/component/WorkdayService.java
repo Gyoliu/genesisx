@@ -366,8 +366,11 @@ public class WorkdayService {
 
         long daysDiff = ChronoUnit.DAYS.between(start.toInstant(), end.toInstant());
         int delay = 0;
+        if(isWorkday(start)){
+            delay ++;
+        }
         Date tomorrow = null;
-        for (int i=0;i <= daysDiff; i++){
+        for (int i=0;i < daysDiff; i++){
             tomorrow = getTomorrow(start);
             if(isWorkday(tomorrow)){
                 delay++;
